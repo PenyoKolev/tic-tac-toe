@@ -7,22 +7,17 @@ public class Board {
     {Marker.EMPTY, Marker.EMPTY, Marker.EMPTY}
   };
 
-  boolean[][] freeCells = {
-    {true, true, true},
-    {true, true, true},
-    {true, true, true}
+  Marker[] freeCells = {
+    Marker.EMPTY,
+    Marker.EMPTY,
+    Marker.EMPTY,
+    Marker.EMPTY,
+    Marker.EMPTY,
+    Marker.EMPTY,
+    Marker.EMPTY,
+    Marker.EMPTY,
+    Marker.EMPTY
   };
-
-  public void move(int position, Marker sign) {
-    if (isFree(position)) {
-      int row = position / 3;
-      int col = position % 3;
-      grid[row][col] = sign;
-      if (sign != Marker.EMPTY) {
-        freeCells[row][col] = false;
-      }
-    }
-  }
 
   public void showBoard() {
     for (int i = 0; i < grid.length; i++) {
@@ -41,18 +36,23 @@ public class Board {
   }
 
   public void showOccupied() {
-    for (int i = 0; i < grid.length; i++) {
-      for (int j = 0; j < grid.length; j++) {
-
-        System.out.print(freeCells[i][j] + " ");
+    for (int i = 0; i < freeCells.length; i++) {
+      System.out.print(freeCells[i] + " ");
+      if (i == 2 || i == 5) {
+        System.out.println();
       }
-      System.out.println();
     }
   }
 
-  public boolean isFree(int position) {
-    int row = position / 3;
-    int col = position % 3;
-    return freeCells[row][col];
+  public Marker isFree(int position) {
+    return freeCells[position];
+  }
+
+  public Marker[][] getGrid() {
+    return grid;
+  }
+
+  public Marker[] getFreeCells() {
+    return freeCells;
   }
 }
