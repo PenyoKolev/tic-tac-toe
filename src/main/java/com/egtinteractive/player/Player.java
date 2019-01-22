@@ -1,4 +1,4 @@
-package player;
+package com.egtinteractive.player;
 
 import com.egtinteractive.board.Marker;
 

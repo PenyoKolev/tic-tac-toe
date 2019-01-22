@@ -1,11 +1,11 @@
-package egt.interactive.game;
+package com.egtinteractive.game;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import com.egtinteractive.board.Board;
 import com.egtinteractive.board.Marker;
-import player.Player;
+import com.egtinteractive.player.Player;
 
 public class Game {
   Board board;

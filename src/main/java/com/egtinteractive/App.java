@@ -7,7 +7,7 @@ import java.sql.Statement;
 import java.util.Scanner;
 import com.egtinteractive.board.Marker;
 import com.egtinteractive.db.DBConnection;
-import egt.interactive.game.Game;
+import com.egtinteractive.game.Game;
 
 public class App {
 
