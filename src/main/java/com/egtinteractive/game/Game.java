@@ -8,13 +8,21 @@ import com.egtinteractive.board.Marker;
 import com.egtinteractive.player.Player;
 
 public class Game {
+  public enum Result {
+    PLAYER,
+    COMPUTER,
+    DRAW
+  }
+
   Board board;
   Player player;
   private boolean end;
+  private Result result;
 
   public Game() {
     board = new Board();
     player = new Player();
+    setResult(Result.DRAW);
   }
 
   public void move(int position) {
@@ -22,12 +30,14 @@ public class Game {
     if (isWin()) {
       System.out.println("Player win !!!");
       end = true;
+      setResult(Result.PLAYER);
       return;
     }
     aiMove();
     if (isWin()) {
       System.out.println("Computer win !!!");
       end = true;
+      setResult(Result.COMPUTER);
       return;
     }
   }
@@ -39,7 +49,7 @@ public class Game {
       board.getGrid()[row][col] = player.getMarker();
       board.getFreeCells()[position] = player.getMarker();
     } else {
-      System.out.println("Position already in use");
+      System.out.println("Position already in use"); //TODO Fix this: player skip his move
     }
   }
 
@@ -97,7 +107,7 @@ public class Game {
       System.out.println("Left diagonal");
       return true;
     }
-    if (grid[0][2] == grid[1][2] && grid[1][2] == grid[2][0] && grid[2][0] != Marker.EMPTY) {
+    if (grid[0][2] == grid[1][1] && grid[1][1] == grid[2][0] && grid[2][0] != Marker.EMPTY) {
       System.out.println("Right diagonal");
       return true;
     }
@@ -123,5 +133,13 @@ public class Game {
 
   public void setEnd(boolean end) {
     this.end = end;
+  }
+
+  public Result getResult() {
+    return result;
+  }
+
+  public void setResult(Result result) {
+    this.result = result;
   }
 }
