@@ -29,7 +29,7 @@ public class App {
     }
     Queries query = new Queries();
     if (game.getResult() == Result.PLAYER) {
-      System.out.println("Please, enter your name.");
+      System.out.println("Please, enter your name:");
       scanner.nextLine();
       String name = scanner.nextLine();
       int id = query.getId(name);

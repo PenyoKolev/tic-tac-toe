@@ -26,6 +26,10 @@ public class Game {
   }
 
   public void move(int position) {
+    if (board.isFree(position) != Marker.EMPTY) {
+      System.out.println("Position already in use");
+      return;
+    }
     playerMove(position);
     if (isWin()) {
       System.out.println("Player win !!!");
@@ -43,14 +47,10 @@ public class Game {
   }
 
   public void playerMove(int position) {
-    if (board.isFree(position) == Marker.EMPTY) {
       int row = position / 3;
       int col = position % 3;
       board.getGrid()[row][col] = player.getMarker();
       board.getFreeCells()[position] = player.getMarker();
-    } else {
-      System.out.println("Position already in use"); //TODO Fix this: player skip his move
-    }
   }
 
   public void aiMove() {

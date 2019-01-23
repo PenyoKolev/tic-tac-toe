@@ -73,7 +73,7 @@ public class Queries {
               "select count(*) as wins, players.name "
                   + "from players as players "
                   + "join games as games on players.player_id = games.player_id "
-                  + "where games.result = 'win' "
+                  + "where games.result = 'win' and players.name not like '' "
                   + "group by games.player_id "
                   + "order by wins desc "
                   + "limit 3;");
