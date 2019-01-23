@@ -82,7 +82,6 @@ public class Game {
     for (int i = 0; i < 3; i++) {
       Marker[] row = board.getGrid()[i];
       if (row[0] == row[1] && row[1] == row[2] && row[2] != Marker.EMPTY) {
-        System.out.println("Row");
         return true;
       }
     }
@@ -94,7 +93,6 @@ public class Game {
       if (board.getGrid()[0][i] == board.getGrid()[1][i]
           && board.getGrid()[1][i] == board.getGrid()[2][i]
           && board.getGrid()[2][i] != Marker.EMPTY) {
-        System.out.println("Col");
         return true;
       }
     }
@@ -104,11 +102,9 @@ public class Game {
   public boolean checkDiagonals() {
     Marker[][] grid = board.getGrid();
     if (grid[0][0] == grid[1][1] && grid[1][1] == grid[2][2] && grid[2][2] != Marker.EMPTY) {
-      System.out.println("Left diagonal");
       return true;
     }
     if (grid[0][2] == grid[1][1] && grid[1][1] == grid[2][0] && grid[2][0] != Marker.EMPTY) {
-      System.out.println("Right diagonal");
       return true;
     }
     return false;
@@ -116,23 +112,14 @@ public class Game {
 
   public void showGame() {
     board.showBoard();
-    //    board.showOccupied();
   }
 
   public Player getPlayer() {
     return player;
   }
 
-  public void setPlayer(Player player) {
-    this.player = player;
-  }
-
   public boolean isEnd() {
     return end;
-  }
-
-  public void setEnd(boolean end) {
-    this.end = end;
   }
 
   public Result getResult() {

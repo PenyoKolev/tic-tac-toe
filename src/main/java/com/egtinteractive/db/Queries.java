@@ -79,7 +79,7 @@ public class Queries {
                   + "limit 3;");
       ResultSet rs = stmt.executeQuery();
       while (rs.next()) {
-        result.add(rs.getString("name") + " " + rs.getInt("wins"));
+        result.add(rs.getInt("wins") + " " + rs.getString("name"));
       }
       return result;
 

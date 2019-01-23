@@ -47,6 +47,7 @@ public class App {
     game.showGame();
     scanner.close();
     ArrayList<String> result = query.topThree();
+    System.out.println("\nHall of Fame:" ); 
     for (String string : result) {
       System.out.println(string ); 
     }
