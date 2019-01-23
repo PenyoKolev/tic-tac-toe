@@ -1,6 +1,7 @@
 package com.egtinteractive;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Scanner;
 import com.egtinteractive.board.Marker;
 import com.egtinteractive.db.Queries;
@@ -45,5 +46,9 @@ public class App {
 
     game.showGame();
     scanner.close();
+    ArrayList<String> result = query.topThree();
+    for (String string : result) {
+      System.out.println(string ); 
+    }
   }
 }
