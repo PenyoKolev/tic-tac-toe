@@ -3,6 +3,7 @@ package com.egtinteractive.game;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import com.egtinteractive.board.TicTacToeBoard;
 import com.egtinteractive.board.Board;
 import com.egtinteractive.board.Marker;
 import com.egtinteractive.player.Player;
@@ -20,7 +21,7 @@ public class Game {
   private Result result;
 
   public Game() {
-    board = new Board();
+    board = new TicTacToeBoard();
     player = new Player();
     setResult(Result.DRAW);
   }

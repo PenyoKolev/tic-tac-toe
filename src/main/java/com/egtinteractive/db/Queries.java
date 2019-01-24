@@ -20,30 +20,36 @@ public class Queries {
     }
   }
 
-  public void addWinGame(int playerId, String result) {
+  public void addWinGameKnownPlayer(int id) {
     try (Connection connection = DBConnection.getConnection(); ) {
       PreparedStatement stmt =
           connection.prepareStatement(
-              "insert into games(player_id, end_time, result) values(?, ?, ?)");
-      stmt.setInt(1, playerId);
-      stmt.setString(
-          2, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
-      stmt.setString(3, result);
+              "update players set score = score + 1 where player_id = ?");
+      stmt.setInt(1, id);
       stmt.executeUpdate();
     } catch (SQLException e) {
       e.printStackTrace();
     }
   }
 
-  public void addLoseGame(String result) {
+  public void addWinGameUnknownPlayer(String name) {
     try (Connection connection = DBConnection.getConnection(); ) {
       PreparedStatement stmt =
-          connection.prepareStatement(
-              "insert into games(player_id, end_time, result) values(?, ?, ?)");
-      stmt.setNull(1, java.sql.Types.NULL);
+          connection.prepareStatement("insert into players (name) values (?)");
+      stmt.setString(1, name);
+      stmt.executeUpdate();
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+  }
+
+  public void addGame(String result) {
+    try (Connection connection = DBConnection.getConnection(); ) {
+      PreparedStatement stmt =
+          connection.prepareStatement("insert into games(end_time, result) values(?, ?)");
       stmt.setString(
-          2, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
-      stmt.setString(3, result);
+          1, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
+      stmt.setString(2, result);
       stmt.executeUpdate();
     } catch (SQLException e) {
       e.printStackTrace();
@@ -69,17 +75,10 @@ public class Queries {
     ArrayList<String> result = new ArrayList<>();
     try (Connection connection = DBConnection.getConnection(); ) {
       PreparedStatement stmt =
-          connection.prepareStatement(
-              "select count(*) as wins, players.name "
-                  + "from players as players "
-                  + "join games as games on players.player_id = games.player_id "
-                  + "where games.result = 'win' and players.name not like '' "
-                  + "group by games.player_id "
-                  + "order by wins desc "
-                  + "limit 3;");
+          connection.prepareStatement("select * from players order by score desc limit 3");
       ResultSet rs = stmt.executeQuery();
       while (rs.next()) {
-        result.add(rs.getInt("wins") + " " + rs.getString("name"));
+        result.add(rs.getInt("score") + " " + rs.getString("name"));
       }
       return result;
 

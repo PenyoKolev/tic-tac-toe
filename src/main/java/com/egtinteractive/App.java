@@ -34,14 +34,14 @@ public class App {
       String name = scanner.nextLine();
       int id = query.getId(name);
       if (id != 0) {
-        query.addWinGame(id, "WIN");
+        query.addWinGameKnownPlayer(id);
+        query.addGame("PLAYER_WIN");
       } else {
-        query.addPlayer(name);
-        int newId = query.getId(name);
-        query.addWinGame(newId, "WIN");
+        query.addWinGameUnknownPlayer(name);
+        query.addGame("PLAYER_WIN");
       }
     } else {
-      query.addLoseGame("LOSE");
+      query.addGame("COMPUTER_WIN");
     }
 
     game.showGame();
