@@ -35,10 +35,8 @@ public class App {
       int id = query.getId(name);
       if (id != 0) {
         query.addWinGameKnownPlayer(id);
-        query.addGame("PLAYER_WIN");
       } else {
         query.addWinGameUnknownPlayer(name);
-        query.addGame("PLAYER_WIN");
       }
     } else {
       query.addGame("COMPUTER_WIN");

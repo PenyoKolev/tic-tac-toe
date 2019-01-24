@@ -10,23 +10,22 @@ import java.util.Calendar;
 
 public class Queries {
 
-  public void addPlayer(String name) {
-    try (Connection connection = DBConnection.getConnection(); ) {
-      PreparedStatement stmt = connection.prepareStatement("insert into players(name) values(?)");
-      stmt.setString(1, name);
-      stmt.executeUpdate();
-    } catch (SQLException e) {
-      e.printStackTrace();
-    }
-  }
-
   public void addWinGameKnownPlayer(int id) {
     try (Connection connection = DBConnection.getConnection(); ) {
+      connection.setAutoCommit(false);
       PreparedStatement stmt =
-          connection.prepareStatement(
-              "update players set score = score + 1 where player_id = ?");
+          connection.prepareStatement("update players set score = score + 1 where player_id = ?");
       stmt.setInt(1, id);
       stmt.executeUpdate();
+
+      PreparedStatement stmt1 =
+          connection.prepareStatement(
+              "insert into games(end_time, result) values(?, 'PLAYER_WIN')");
+      stmt1.setString(
+          1, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
+      stmt1.executeUpdate();      
+      connection.commit();     
+      System.out.println("DONE!" ); 
     } catch (SQLException e) {
       e.printStackTrace();
     }
@@ -34,10 +33,17 @@ public class Queries {
 
   public void addWinGameUnknownPlayer(String name) {
     try (Connection connection = DBConnection.getConnection(); ) {
-      PreparedStatement stmt =
-          connection.prepareStatement("insert into players (name) values (?)");
+      connection.setAutoCommit(false);
+      PreparedStatement stmt = connection.prepareStatement("insert into players (name) values (?)");
       stmt.setString(1, name);
-      stmt.executeUpdate();
+      stmt.executeUpdate();      
+      PreparedStatement stmt1 =
+          connection.prepareStatement(
+              "insert into games(end_time, result) values(?, 'PLAYER_WIN')");
+      stmt1.setString(
+          1, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
+      stmt1.executeUpdate();      
+      connection.commit();
     } catch (SQLException e) {
       e.printStackTrace();
     }
