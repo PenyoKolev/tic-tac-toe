@@ -7,6 +7,7 @@ public class Player {
   private Marker marker;
 
   public Player() {
+    this.marker = Marker.X;
   }
 
   public String getName() {

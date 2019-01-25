@@ -10,7 +10,7 @@ public class ConsoleIO implements InputOutput {
   }
 
   @Override
-  public void whrite(String string) {
+  public void write(String string) {
     System.out.println(string);
   }
 
@@ -22,5 +22,10 @@ public class ConsoleIO implements InputOutput {
   @Override
   public void close() {
     scanner.close();
+  }
+
+  @Override
+  public int readNextInt() {
+    return scanner.nextInt();
   }
 }

@@ -7,8 +7,7 @@ public interface Machine {
   public int putCoins(int coins);
   
   public Game selectGame(Game game);
-  
-  public Game playGame(Game game);
-  
+    
+  public void playGame();  
   
 }
