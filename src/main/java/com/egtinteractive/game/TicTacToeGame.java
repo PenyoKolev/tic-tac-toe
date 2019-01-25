@@ -17,18 +17,18 @@ public class TicTacToeGame implements Game {
   private Result result;
   private int price;
   Launcher launcher;
-  InputOutput io;
+  private InputOutput io;
 
-  public TicTacToeGame(InputOutput io) {
-    this.io = io;
+  public TicTacToeGame() {
     setBoard(new TicTacToeBoard());
     player = new Player();
     setResult(Result.DRAW);
-    setPrice(40);
+    setPrice(10);
   }
 
   @Override
   public boolean startGame(Game game, InputOutput io) {
+    setIo(io);
     launcher = new Launcher(game, io);
     launcher.start();
     return true;
@@ -36,25 +36,25 @@ public class TicTacToeGame implements Game {
 
   public void move(int position) {
     if (getBoard().isFree(position) != Marker.EMPTY) {
-      io.write("Position already in use!");
+      getIo().write("Position already in use!");
       return;
     }
     playerMove(position);
     if (isWin()) {
-      io.write("Player win !!!");
+      getIo().write("Player win !!!");
       isOver = true;
       setResult(Result.PLAYER_WIN);
       return;
     }
     aiMove();
     if (isWin()) {
-      io.write("Computer win !!!");
+      getIo().write("Computer win !!!");
       isOver = true;
       setResult(Result.COMPUTER_WIN);
       return;
     }
     if (board.getFreeCells().length < 1) {
-      io.write("Computer win !!!");
+      getIo().write("Computer win !!!");
       isOver = true;
       setResult(Result.DRAW);
       return;
@@ -79,7 +79,7 @@ public class TicTacToeGame implements Game {
     if (freeCells.size() < 1) {
       isOver = true;
       result = Result.DRAW;
-      io.write("DRAW !!!");
+      getIo().write("DRAW !!!");
       return;
     }
     int randomElement = freeCells.get(rand.nextInt(freeCells.size()));
@@ -133,7 +133,7 @@ public class TicTacToeGame implements Game {
 
   @Override
   public void showGame() {
-    getBoard().showBoard();
+    getBoard().showBoard(io);
   }
 
   public Player getPlayer() {
@@ -172,5 +172,13 @@ public class TicTacToeGame implements Game {
 
   public void setBoard(Board board) {
     this.board = board;
+  }
+
+  public InputOutput getIo() {
+    return io;
+  }
+
+  public void setIo(InputOutput io) {
+    this.io = io;
   }
 }

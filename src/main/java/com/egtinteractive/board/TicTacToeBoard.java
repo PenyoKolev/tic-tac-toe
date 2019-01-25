@@ -1,5 +1,7 @@
 package com.egtinteractive.board;
 
+import com.egtinteractive.io.InputOutput;
+
 public class TicTacToeBoard implements Board{
   Marker[][] grid = {
     {Marker.EMPTY, Marker.EMPTY, Marker.EMPTY},
@@ -20,7 +22,7 @@ public class TicTacToeBoard implements Board{
   };
 
   @Override
-  public void showBoard() {
+  public void showBoard(InputOutput io) {
     for (int i = 0; i < grid.length; i++) {
       StringBuilder sb = new StringBuilder();
       sb.append(" ")
@@ -29,9 +31,9 @@ public class TicTacToeBoard implements Board{
           .append(grid[i][1])
           .append(" | ")
           .append(grid[i][2]);
-      System.out.println(sb.toString());
+      io.write(sb.toString());
       if (i < grid.length - 1) {
-        System.out.println("-----------");
+        io.write("-----------");
       }
     }
   }
