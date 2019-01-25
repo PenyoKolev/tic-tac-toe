@@ -1,6 +1,7 @@
 package com.egtinteractive.machine;
 
 import com.egtinteractive.game.Game;
+import com.egtinteractive.io.InputOutput;
 
 public class ArcadeMachine implements Machine {
   private StateMachine state;
@@ -18,13 +19,13 @@ public class ArcadeMachine implements Machine {
   }
 
   @Override
-  public Game selectGame(Game game) {
-    return this.state.selectGame(this, game);
+  public Game selectGame(Game game, InputOutput io) {
+    return this.state.selectGame(this, game, io);
   }
 
   @Override
-  public void playGame() {
-    this.state.playGame(this);
+  public void playGame(InputOutput io) {
+    this.state.playGame(this, io);
   }
 
   public StateMachine getState() {
@@ -47,7 +48,7 @@ public class ArcadeMachine implements Machine {
     return game;
   }
 
-  public void setGame(Game game) {
+  public void setGame(Game game, InputOutput io) {
     this.game = game;
   }
 }

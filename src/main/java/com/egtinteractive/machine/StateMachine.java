@@ -1,6 +1,7 @@
 package com.egtinteractive.machine;
 
 import com.egtinteractive.game.Game;
+import com.egtinteractive.io.InputOutput;
 
 public enum StateMachine {
   SELECT_GAME {
@@ -17,7 +18,7 @@ public enum StateMachine {
     }
 
     @Override
-    public Game selectGame(ArcadeMachine machine, Game game) {
+    public Game selectGame(ArcadeMachine machine, Game game, InputOutput io) {
       if (machine.getBalance() < game.getPrice()) {
 
         System.out.printf(
@@ -25,7 +26,7 @@ public enum StateMachine {
             game, game.getPrice(), game.getPrice() - machine.getBalance());
         machine.setState(SELECT_GAME);
       } else {
-        machine.setGame(game);
+        machine.setGame(game, io);
         machine.setState(PLAY_GAME);
       }
       return game;
@@ -35,8 +36,8 @@ public enum StateMachine {
   PLAY_GAME {
 
     @Override
-    public void playGame(ArcadeMachine machine) {
-      boolean isOver = machine.getGame().startGame(machine.getGame());
+    public void playGame(ArcadeMachine machine, InputOutput io) {
+      boolean isOver = machine.getGame().startGame(machine.getGame(), io);
       if (isOver) {
         machine.setState(SELECT_GAME);
       }
@@ -47,11 +48,11 @@ public enum StateMachine {
     throw new IllegalStateException("Coins are not accepted in current state!");
   }
 
-  public Game selectGame(ArcadeMachine machine, Game game) {
+  public Game selectGame(ArcadeMachine machine, Game game, InputOutput io) {
     throw new IllegalStateException("Cannot select game in current state!");
   }
 
-  public void playGame(ArcadeMachine machine) {
+  public void playGame(ArcadeMachine machine, InputOutput io) {
     throw new IllegalStateException("Cannot play in current state!");
   }
 }

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import com.egtinteractive.board.TicTacToeBoard;
+import com.egtinteractive.io.InputOutput;
 import com.egtinteractive.board.Board;
 import com.egtinteractive.board.Marker;
 import com.egtinteractive.player.Player;
@@ -16,8 +17,10 @@ public class TicTacToeGame implements Game {
   private Result result;
   private int price;
   Launcher launcher;
+  InputOutput io;
 
-  public TicTacToeGame() {
+  public TicTacToeGame(InputOutput io) {
+    this.io = io;
     setBoard(new TicTacToeBoard());
     player = new Player();
     setResult(Result.DRAW);
@@ -25,33 +28,33 @@ public class TicTacToeGame implements Game {
   }
 
   @Override
-  public boolean startGame(Game game) {
-    launcher = new Launcher(game);
+  public boolean startGame(Game game, InputOutput io) {
+    launcher = new Launcher(game, io);
     launcher.start();
     return true;
   }
 
   public void move(int position) {
     if (getBoard().isFree(position) != Marker.EMPTY) {
-      System.out.println("Position already in use");
+      io.write("Position already in use!");
       return;
     }
     playerMove(position);
     if (isWin()) {
-      System.out.println("Player win !!!");
+      io.write("Player win !!!");
       isOver = true;
       setResult(Result.PLAYER_WIN);
       return;
     }
     aiMove();
     if (isWin()) {
-      System.out.println("Computer win !!!");
+      io.write("Computer win !!!");
       isOver = true;
       setResult(Result.COMPUTER_WIN);
       return;
     }
     if (board.getFreeCells().length < 1) {
-      System.out.println("Computer win !!!");
+      io.write("Computer win !!!");
       isOver = true;
       setResult(Result.DRAW);
       return;
@@ -76,8 +79,8 @@ public class TicTacToeGame implements Game {
     if (freeCells.size() < 1) {
       isOver = true;
       result = Result.DRAW;
+      io.write("DRAW !!!");
       return;
-      
     }
     int randomElement = freeCells.get(rand.nextInt(freeCells.size()));
     int row = randomElement / 3;

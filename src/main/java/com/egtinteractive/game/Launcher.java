@@ -2,21 +2,21 @@ package com.egtinteractive.game;
 
 import java.util.ArrayList;
 import com.egtinteractive.db.Queries;
-import com.egtinteractive.io.ConsoleIO;
 import com.egtinteractive.io.InputOutput;
 
 public class Launcher {
 
-  InputOutput io = new ConsoleIO();
+  InputOutput io;
   Game game;
 
-  public Launcher(Game game) {
+  public Launcher(Game game, InputOutput io) {
     this.game = game;
+    this.io = io;
   }
 
   public boolean start() {
     while (!game.isOver()) {
-      System.out.println("Your next move is: ");
+      io.write("Your next move is: ");
       game.showGame();
 
       int x = io.readNextInt();
@@ -27,7 +27,7 @@ public class Launcher {
     }
     Queries query = new Queries();
     if (game.result() == Result.PLAYER_WIN) {
-      System.out.println("Please, enter your name:");
+      io.write("Please, enter your name:");
       io.read();
       String name = io.read();
       int id = query.getId(name);
@@ -39,14 +39,12 @@ public class Launcher {
     } else {
       query.addLoseGame();
     }
-
     game.showGame();
     ArrayList<String> result = query.topThree();
-    System.out.println("\nHall of Fame:");
+    io.write("\nHall of Fame:");
     for (String string : result) {
-      System.out.println(string);
+      io.write(string);
     }
-
     return true;
   }
 }
