@@ -9,7 +9,7 @@ public class App {
   public static void main(String[] args) {
     
     Machine machine = new ArcadeMachine();
-//    machine.putCoins(8);
+    machine.putCoins(40);
     machine.selectGame(new TicTacToeGame());
     machine.playGame();
     

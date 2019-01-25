@@ -12,12 +12,14 @@ public enum StateMachine {
         machine.setState(SELECT_GAME);
       }
       machine.setBalance(machine.getBalance() + coins);
+
       return coins;
     }
 
     @Override
     public Game selectGame(ArcadeMachine machine, Game game) {
       if (machine.getBalance() < game.getPrice()) {
+
         System.out.printf(
             "The price of %s is %d.\nPlease add %d.\n",
             game, game.getPrice(), game.getPrice() - machine.getBalance());
@@ -34,8 +36,6 @@ public enum StateMachine {
 
     @Override
     public void playGame(ArcadeMachine machine) {
-      System.out.println("The balance here is: " + machine.getGame().getPrice() ); 
-
       boolean isOver = machine.getGame().startGame(machine.getGame());
       if (isOver) {
         machine.setState(SELECT_GAME);

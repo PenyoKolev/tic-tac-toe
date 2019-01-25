@@ -8,24 +8,22 @@ import com.egtinteractive.board.Board;
 import com.egtinteractive.board.Marker;
 import com.egtinteractive.player.Player;
 
-public class TicTacToeGame implements Game{
-  
+public class TicTacToeGame implements Game {
 
-  Board board;
+  private Board board;
   Player player;
-  private boolean end;
+  private boolean isOver;
   private Result result;
   private int price;
   Launcher launcher;
 
   public TicTacToeGame() {
-    board = new TicTacToeBoard();
+    setBoard(new TicTacToeBoard());
     player = new Player();
-    price = 10;
     setResult(Result.DRAW);
-    setPrice(0);
+    setPrice(40);
   }
-  
+
   @Override
   public boolean startGame(Game game) {
     launcher = new Launcher(game);
@@ -34,41 +32,53 @@ public class TicTacToeGame implements Game{
   }
 
   public void move(int position) {
-    if (board.isFree(position) != Marker.EMPTY) {
+    if (getBoard().isFree(position) != Marker.EMPTY) {
       System.out.println("Position already in use");
       return;
     }
     playerMove(position);
     if (isWin()) {
       System.out.println("Player win !!!");
-      end = true;
+      isOver = true;
       setResult(Result.PLAYER_WIN);
       return;
     }
     aiMove();
     if (isWin()) {
       System.out.println("Computer win !!!");
-      end = true;
+      isOver = true;
       setResult(Result.COMPUTER_WIN);
+      return;
+    }
+    if (board.getFreeCells().length < 1) {
+      System.out.println("Computer win !!!");
+      isOver = true;
+      setResult(Result.DRAW);
       return;
     }
   }
 
   public void playerMove(int position) {
-      int row = position / 3;
-      int col = position % 3;
-      board.getGrid()[row][col] = player.getMarker();
-      board.getFreeCells()[position] = player.getMarker();
+    int row = position / 3;
+    int col = position % 3;
+    getBoard().getGrid()[row][col] = player.getMarker();
+    getBoard().getFreeCells()[position] = player.getMarker();
   }
 
   public void aiMove() {
     List<Integer> freeCells = new ArrayList<>();
-    for (int i = 0; i < board.getFreeCells().length; i++) {
-      if (board.getFreeCells()[i] == Marker.EMPTY) {
+    for (int i = 0; i < getBoard().getFreeCells().length; i++) {
+      if (getBoard().getFreeCells()[i] == Marker.EMPTY) {
         freeCells.add(i);
       }
     }
     Random rand = new Random();
+    if (freeCells.size() < 1) {
+      isOver = true;
+      result = Result.DRAW;
+      return;
+      
+    }
     int randomElement = freeCells.get(rand.nextInt(freeCells.size()));
     int row = randomElement / 3;
     int col = randomElement % 3;
@@ -78,8 +88,8 @@ public class TicTacToeGame implements Game{
     } else {
       marker = Marker.X;
     }
-    board.getGrid()[row][col] = marker;
-    board.getFreeCells()[randomElement] = player.getMarker();
+    getBoard().getGrid()[row][col] = marker;
+    getBoard().getFreeCells()[randomElement] = player.getMarker();
   }
 
   public boolean isWin() {
@@ -88,7 +98,7 @@ public class TicTacToeGame implements Game{
 
   public boolean checkRows() {
     for (int i = 0; i < 3; i++) {
-      Marker[] row = board.getGrid()[i];
+      Marker[] row = getBoard().getGrid()[i];
       if (row[0] == row[1] && row[1] == row[2] && row[2] != Marker.EMPTY) {
         return true;
       }
@@ -98,9 +108,9 @@ public class TicTacToeGame implements Game{
 
   public boolean checkColumns() { // TODO Fix this
     for (int i = 0; i < 3; i++) {
-      if (board.getGrid()[0][i] == board.getGrid()[1][i]
-          && board.getGrid()[1][i] == board.getGrid()[2][i]
-          && board.getGrid()[2][i] != Marker.EMPTY) {
+      if (getBoard().getGrid()[0][i] == getBoard().getGrid()[1][i]
+          && getBoard().getGrid()[1][i] == getBoard().getGrid()[2][i]
+          && getBoard().getGrid()[2][i] != Marker.EMPTY) {
         return true;
       }
     }
@@ -108,7 +118,7 @@ public class TicTacToeGame implements Game{
   }
 
   public boolean checkDiagonals() {
-    Marker[][] grid = board.getGrid();
+    Marker[][] grid = getBoard().getGrid();
     if (grid[0][0] == grid[1][1] && grid[1][1] == grid[2][2] && grid[2][2] != Marker.EMPTY) {
       return true;
     }
@@ -120,7 +130,7 @@ public class TicTacToeGame implements Game{
 
   @Override
   public void showGame() {
-    board.showBoard();
+    getBoard().showBoard();
   }
 
   public Player getPlayer() {
@@ -128,7 +138,7 @@ public class TicTacToeGame implements Game{
   }
 
   public boolean isOver() {
-    return end;
+    return isOver;
   }
 
   public Result getResult() {
@@ -138,21 +148,26 @@ public class TicTacToeGame implements Game{
   public void setResult(Result result) {
     this.result = result;
   }
-  
-  @Override
-  public int getPrice() {
-    return price;
-  }
-  
+
   public void setPrice(int price) {
     this.price = price;
   }
 
   @Override
   public Result result() {
-    // TODO Auto-generated method stub
     return result;
   }
 
-  
+  @Override
+  public int getPrice() {
+    return price;
+  }
+
+  public Board getBoard() {
+    return board;
+  }
+
+  public void setBoard(Board board) {
+    this.board = board;
+  }
 }

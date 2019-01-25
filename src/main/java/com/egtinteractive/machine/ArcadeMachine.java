@@ -50,5 +50,4 @@ public class ArcadeMachine implements Machine {
   public void setGame(Game game) {
     this.game = game;
   }
-  
 }
