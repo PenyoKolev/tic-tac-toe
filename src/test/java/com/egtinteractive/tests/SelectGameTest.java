@@ -8,12 +8,12 @@ import com.egtinteractive.machine.ArcadeMachine;
 import com.egtinteractive.provider.Provider;
 
 public class SelectGameTest {
-  @DataProvider(name = "arcadeMachine")
+  @DataProvider(name = "arcadeMachineFakeIO")
   public Object[][] getMachine() {
-    return Provider.arcadeMachine();
+    return Provider.arcadeMachineFakeIO();
   }
   
-  @Test(dataProvider = "arcadeMachine")
+  @Test(dataProvider = "arcadeMachineFakeIO")
   public void selectGameShouldChangeStateToPLAY_GAME(final ArcadeMachine machine) {
     //Arrange
     machine.putCoins(10);
@@ -25,7 +25,7 @@ public class SelectGameTest {
     assertEquals(machine.getState().toString(), "PLAY_GAME");  
   }
   
-  @Test(dataProvider = "arcadeMachine")
+  @Test(dataProvider = "arcadeMachineFakeIO")
   public void selectGameShouldNotChangeStateIfCoinsNotEnough(final ArcadeMachine machine) {
     //Arrange
     machine.putCoins(10);
@@ -37,7 +37,7 @@ public class SelectGameTest {
     assertEquals(machine.getState().toString(), "PLAY_GAME");  
   }
   
-  @Test(dataProvider = "arcadeMachine", expectedExceptions = IllegalStateException.class)
+  @Test(dataProvider = "arcadeMachineFakeIO", expectedExceptions = IllegalStateException.class)
   public void methodUnsuportedForTheStateShouldDoNothing(ArcadeMachine machine) {
     // Act
     machine.playGame();

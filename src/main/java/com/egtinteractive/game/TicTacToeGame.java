@@ -42,20 +42,20 @@ public class TicTacToeGame implements Game {
     playerMove(position);
     if (isWin()) {
       getIo().write("Player win !!!");
-      isOver = true;
+      setOver(true);
       setResult(Result.PLAYER_WIN);
       return;
     }
     aiMove();
     if (isWin()) {
       getIo().write("Computer win !!!");
-      isOver = true;
+      setOver(true);
       setResult(Result.COMPUTER_WIN);
       return;
     }
     if (board.getFreeCells().length < 1) {
       getIo().write("Computer win !!!");
-      isOver = true;
+      setOver(true);
       setResult(Result.DRAW);
       return;
     }
@@ -77,7 +77,7 @@ public class TicTacToeGame implements Game {
     }
     final Random rand = new Random();
     if (freeCells.size() < 1) {
-      isOver = true;
+      setOver(true);
       result = Result.DRAW;
       getIo().write("DRAW !!!");
       return;
@@ -109,7 +109,7 @@ public class TicTacToeGame implements Game {
     return false;
   }
 
-  public boolean checkColumns() { 
+  public boolean checkColumns() {
     for (int i = 0; i < 3; i++) {
       if (getBoard().getGrid()[0][i] == getBoard().getGrid()[1][i]
           && getBoard().getGrid()[1][i] == getBoard().getGrid()[2][i]
@@ -140,8 +140,13 @@ public class TicTacToeGame implements Game {
     return player;
   }
 
+  @Override
   public boolean isOver() {
     return isOver;
+  }
+  
+  public void setOver(boolean isOver) {
+    this.isOver = isOver;
   }
 
   public Result getResult() {

@@ -8,12 +8,12 @@ import org.testng.annotations.DataProvider;
 
 public class PutCoinsTest {
 
-  @DataProvider(name = "arcadeMachine")
+  @DataProvider(name = "arcadeMachineFakeIO")
   public Object[][] getMachine() {
-    return Provider.arcadeMachine();
+    return Provider.arcadeMachineFakeIO();
   }
   
-  @Test(dataProvider = "arcadeMachine")
+  @Test(dataProvider = "arcadeMachineFakeIO")
   public void putCoinsShouldAddCoinsToBalance(final ArcadeMachine machine) {
     //Arrange
     final int oldBalance = machine.getBalance();
@@ -27,7 +27,7 @@ public class PutCoinsTest {
     
   }
   
-  @Test(dataProvider = "arcadeMachine")
+  @Test(dataProvider = "arcadeMachineFakeIO")
   public void putCoinsShouldNotAcceptNegativeCoins(final ArcadeMachine machine) {
     //Arrange
     final int oldBalance = machine.getBalance();
@@ -41,7 +41,7 @@ public class PutCoinsTest {
     
   }
   
-  @Test(dataProvider = "arcadeMachine", expectedExceptions = IllegalStateException.class)
+  @Test(dataProvider = "arcadeMachineFakeIO", expectedExceptions = IllegalStateException.class)
   public void methodUnsuportedForTheStateShouldDoNothing(ArcadeMachine machine) {
     // Act
     machine.playGame();
