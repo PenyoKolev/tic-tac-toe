@@ -41,22 +41,12 @@ public class TicTacToeGame implements Game {
     }
     playerMove(position);
     if (isWin()) {
-      getIo().write("Player win !!!");
-      setOver(true);
-      setResult(Result.PLAYER_WIN);
+      resultHelper("Player win !!!", Result.PLAYER_WIN);
       return;
     }
     aiMove();
     if (isWin()) {
-      getIo().write("Computer win !!!");
-      setOver(true);
-      setResult(Result.COMPUTER_WIN);
-      return;
-    }
-    if (board.getFreeCells().length < 1) {
-      getIo().write("Computer win !!!");
-      setOver(true);
-      setResult(Result.DRAW);
+      resultHelper("Computer win !!!", Result.COMPUTER_WIN);
       return;
     }
   }
@@ -64,6 +54,7 @@ public class TicTacToeGame implements Game {
   public void playerMove(final int position) {
     final int row = position / 3;
     final int col = position % 3;
+
     getBoard().getGrid()[row][col] = player.getMarker();
     getBoard().getFreeCells()[position] = player.getMarker();
   }
@@ -77,9 +68,7 @@ public class TicTacToeGame implements Game {
     }
     final Random rand = new Random();
     if (freeCells.size() < 1) {
-      setOver(true);
-      result = Result.DRAW;
-      getIo().write("DRAW !!!");
+      resultHelper("Draw !!!", Result.DRAW);
       return;
     }
     final int randomElement = freeCells.get(rand.nextInt(freeCells.size()));
@@ -131,21 +120,23 @@ public class TicTacToeGame implements Game {
     return false;
   }
 
+  private void resultHelper(String string, Result result) {
+    getIo().write(string);
+    setOver(true);
+    setResult(result);
+  }
+
   @Override
   public void showGame() {
     getBoard().showBoard(io);
-  }
-
-  public Player getPlayer() {
-    return player;
   }
 
   @Override
   public boolean isOver() {
     return isOver;
   }
-  
-  public void setOver(boolean isOver) {
+
+  public void setOver(final boolean isOver) {
     this.isOver = isOver;
   }
 

@@ -40,7 +40,7 @@ public class Launcher {
       query.addLoseGame();
     }
     game.showGame();
-    ArrayList<String> result = query.topThree();
+    final ArrayList<String> result = query.topThree();
     io.write("\nHall of Fame:");
     for (String string : result) {
       io.write(string);
