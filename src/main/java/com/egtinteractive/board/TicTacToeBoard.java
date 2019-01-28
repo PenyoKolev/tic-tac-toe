@@ -3,13 +3,13 @@ package com.egtinteractive.board;
 import com.egtinteractive.io.InputOutput;
 
 public class TicTacToeBoard implements Board{
-  Marker[][] grid = {
+  private final Marker[][] grid = {
     {Marker.EMPTY, Marker.EMPTY, Marker.EMPTY},
     {Marker.EMPTY, Marker.EMPTY, Marker.EMPTY},
     {Marker.EMPTY, Marker.EMPTY, Marker.EMPTY}
   };
 
-  Marker[] freeCells = {
+  private final Marker[] freeCells = {
     Marker.EMPTY,
     Marker.EMPTY,
     Marker.EMPTY,
@@ -22,9 +22,9 @@ public class TicTacToeBoard implements Board{
   };
 
   @Override
-  public void showBoard(InputOutput io) {
+  public void showBoard(final InputOutput io) {
     for (int i = 0; i < grid.length; i++) {
-      StringBuilder sb = new StringBuilder();
+      final StringBuilder sb = new StringBuilder();
       sb.append(" ")
           .append(grid[i][0])
           .append(" | ")
@@ -39,7 +39,7 @@ public class TicTacToeBoard implements Board{
   }
 
   @Override
-  public Marker isFree(int position) {
+  public Marker isFree(final int position) {
     return freeCells[position];
   }
 

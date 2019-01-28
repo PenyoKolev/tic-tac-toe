@@ -2,7 +2,7 @@ package com.egtinteractive.io;
 
 public interface InputOutput extends AutoCloseable {
   
-  public void write(String string);
+  public void write(final String string);
   
   public String read();
   

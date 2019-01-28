@@ -4,9 +4,9 @@ import com.egtinteractive.io.InputOutput;
 
 public interface Board {
   
-  public void showBoard(InputOutput io);
+  public void showBoard(final InputOutput io);
 
-  public Marker isFree(int position);
+  public Marker isFree(final int position);
 
   public Marker[][] getGrid();
 

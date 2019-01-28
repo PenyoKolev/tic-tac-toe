@@ -6,7 +6,7 @@ public interface Game {
 
   public int getPrice();
 
-  public void move(int position);
+  public void move(final int position);
 
   public boolean isOver();
 
@@ -14,6 +14,6 @@ public interface Game {
 
   public void showGame();
 
-  public boolean startGame(Game game, InputOutput io);
+  public boolean startGame(final Game game, final InputOutput io);
   
 }

@@ -10,15 +10,15 @@ import java.util.Calendar;
 
 public class Queries {
 
-  public void addWinGameKnownPlayer(int id) {
-    try (Connection connection = DBConnection.getConnection(); ) {
+  public void addWinGameKnownPlayer(final int id) {
+    try (final Connection connection = DBConnection.getConnection(); ) {
       connection.setAutoCommit(false);
-      PreparedStatement stmt =
+      final PreparedStatement stmt =
           connection.prepareStatement("update players set score = score + 1 where player_id = ?");
       stmt.setInt(1, id);
       stmt.executeUpdate();
 
-      PreparedStatement stmt1 =
+      final PreparedStatement stmt1 =
           connection.prepareStatement(
               "insert into games(end_time, result) values(?, 'PLAYER_WIN')");
       stmt1.setString(
@@ -30,13 +30,13 @@ public class Queries {
     }
   }
 
-  public void addWinGameUnknownPlayer(String name) {
-    try (Connection connection = DBConnection.getConnection(); ) {
+  public void addWinGameUnknownPlayer(final String name) {
+    try (final Connection connection = DBConnection.getConnection(); ) {
       connection.setAutoCommit(false);
-      PreparedStatement stmt = connection.prepareStatement("insert into players (name) values (?)");
+      final PreparedStatement stmt = connection.prepareStatement("insert into players (name) values (?)");
       stmt.setString(1, name);
       stmt.executeUpdate();
-      PreparedStatement stmt1 =
+      final PreparedStatement stmt1 =
           connection.prepareStatement(
               "insert into games(end_time, result) values(?, 'PLAYER_WIN')");
       stmt1.setString(
@@ -49,8 +49,8 @@ public class Queries {
   }
 
   public void addLoseGame() {
-    try (Connection connection = DBConnection.getConnection(); ) {
-      PreparedStatement stmt =
+    try (final Connection connection = DBConnection.getConnection(); ) {
+      final PreparedStatement stmt =
           connection.prepareStatement(
               "insert into games(end_time, result) values(?, 'COMPUTER_WIN')");
       stmt.setString(
@@ -61,11 +61,11 @@ public class Queries {
     }
   }
 
-  public int getId(String name) {
-    try (Connection connection = DBConnection.getConnection(); ) {
-      PreparedStatement stmt = connection.prepareStatement("select * from players where name = ?");
+  public int getId(final String name) {
+    try (final Connection connection = DBConnection.getConnection(); ) {
+      final PreparedStatement stmt = connection.prepareStatement("select * from players where name = ?");
       stmt.setString(1, name);
-      ResultSet rs = stmt.executeQuery();
+      final ResultSet rs = stmt.executeQuery();
       if (rs.next()) {
         return rs.getInt("player_id");
       } else {
@@ -77,15 +77,15 @@ public class Queries {
   }
 
   public ArrayList<String> topThree() {
-    ArrayList<String> result = new ArrayList<>();
-    try (Connection connection = DBConnection.getConnection(); ) {
+    final ArrayList<String> result = new ArrayList<>();
+    try (final Connection connection = DBConnection.getConnection(); ) {
       PreparedStatement stmt =
           connection.prepareStatement(
               "select * from players "
                   + "where name not like '' "
                   + "order by score desc "
                   + "limit 3");
-      ResultSet rs = stmt.executeQuery();
+      final ResultSet rs = stmt.executeQuery();
       while (rs.next()) {
         result.add(rs.getInt("score") + " " + rs.getString("name"));
       }

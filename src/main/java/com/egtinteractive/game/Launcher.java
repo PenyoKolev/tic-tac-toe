@@ -6,10 +6,10 @@ import com.egtinteractive.io.InputOutput;
 
 public class Launcher {
 
-  InputOutput io;
-  Game game;
+  private final InputOutput io;
+  private final Game game;
 
-  public Launcher(Game game, InputOutput io) {
+  public Launcher(final Game game, final InputOutput io) {
     this.game = game;
     this.io = io;
   }
@@ -25,7 +25,7 @@ public class Launcher {
       }
       game.move(x);
     }
-    Queries query = new Queries();
+    final Queries query = new Queries();
     if (game.result() == Result.PLAYER_WIN) {
       io.write("Please, enter your name:");
       io.read();

@@ -9,19 +9,19 @@ public class ArcadeMachine implements Machine {
   private Game game;
   private InputOutput io;
 
-  public ArcadeMachine(InputOutput io) {
+  public ArcadeMachine(final InputOutput io) {
     this.setState(StateMachine.SELECT_GAME);
     this.setBalance(0);
     this.setIo(io);
   }
 
   @Override
-  public int putCoins(int coins) {
+  public int putCoins(final int coins) {
     return this.state.putCoins(this, coins);
   }
 
   @Override
-  public Game selectGame(Game game) {
+  public Game selectGame(final Game game) {
     return this.state.selectGame(this, game);
   }
 
@@ -34,7 +34,7 @@ public class ArcadeMachine implements Machine {
     return state;
   }
 
-  public void setState(StateMachine state) {
+  public void setState(final StateMachine state) {
     this.state = state;
   }
 
@@ -42,7 +42,7 @@ public class ArcadeMachine implements Machine {
     return balance;
   }
 
-  public void setBalance(int balance) {
+  public void setBalance(final int balance) {
     this.balance = balance;
   }
 
@@ -50,7 +50,7 @@ public class ArcadeMachine implements Machine {
     return game;
   }
 
-  public void setGame(Game game) {
+  public void setGame(final Game game) {
     this.game = game;
   }
 
@@ -58,7 +58,7 @@ public class ArcadeMachine implements Machine {
     return io;
   }
 
-  public void setIo(InputOutput io) {
+  public void setIo(final InputOutput io) {
     this.io = io;
   }
 }

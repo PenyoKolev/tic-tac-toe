@@ -4,9 +4,9 @@ import com.egtinteractive.game.Game;
 
 public interface Machine {
   
-  public int putCoins(int coins);
+  public int putCoins(final int coins);
   
-  public Game selectGame(Game game);
+  public Game selectGame(final Game game);
     
   public void playGame();  
   

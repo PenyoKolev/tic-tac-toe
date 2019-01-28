@@ -18,7 +18,7 @@ public class Player {
   return marker;
   }
 
-  public void setMarker(Marker marker) {
+  public void setMarker(final Marker marker) {
   this.marker = marker;
   }
 }
