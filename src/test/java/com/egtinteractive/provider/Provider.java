@@ -1,5 +1,6 @@
 package com.egtinteractive.provider;
 
+import com.egtinteractive.io.ConsoleIO;
 import com.egtinteractive.machine.ArcadeMachine;
 
 public class Provider {
@@ -9,6 +10,6 @@ public class Provider {
   }
   
   public static Object[][] arcadeMachineConsoleIO() {
-    return new Object[][] {{new ArcadeMachine(new FakeInputIO())}};
+    return new Object[][] {{new ArcadeMachine(new ConsoleIO())}};
   }
 }

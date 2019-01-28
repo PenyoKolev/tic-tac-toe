@@ -2,7 +2,7 @@ package com.egtinteractive.board;
 
 import com.egtinteractive.io.InputOutput;
 
-public class TicTacToeBoard implements Board{
+public class TicTacToeBoard implements Board {
   private final Marker[][] grid = {
     {Marker.EMPTY, Marker.EMPTY, Marker.EMPTY},
     {Marker.EMPTY, Marker.EMPTY, Marker.EMPTY},

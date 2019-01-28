@@ -17,7 +17,6 @@ public class Queries {
           connection.prepareStatement("update players set score = score + 1 where player_id = ?");
       stmt.setInt(1, id);
       stmt.executeUpdate();
-
       final PreparedStatement stmt1 =
           connection.prepareStatement(
               "insert into games(end_time, result) values(?, 'PLAYER_WIN')");
@@ -33,7 +32,8 @@ public class Queries {
   public void addWinGameUnknownPlayer(final String name) {
     try (final Connection connection = DBConnection.getConnection(); ) {
       connection.setAutoCommit(false);
-      final PreparedStatement stmt = connection.prepareStatement("insert into players (name) values (?)");
+      final PreparedStatement stmt =
+          connection.prepareStatement("insert into players (name) values (?)");
       stmt.setString(1, name);
       stmt.executeUpdate();
       final PreparedStatement stmt1 =
@@ -63,7 +63,8 @@ public class Queries {
 
   public int getId(final String name) {
     try (final Connection connection = DBConnection.getConnection(); ) {
-      final PreparedStatement stmt = connection.prepareStatement("select * from players where name = ?");
+      final PreparedStatement stmt =
+          connection.prepareStatement("select * from players where name = ?");
       stmt.setString(1, name);
       final ResultSet rs = stmt.executeQuery();
       if (rs.next()) {

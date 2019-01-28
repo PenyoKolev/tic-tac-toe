@@ -28,13 +28,13 @@ public class SelectGameTest {
   @Test(dataProvider = "arcadeMachineFakeIO")
   public void selectGameShouldNotChangeStateIfCoinsNotEnough(final ArcadeMachine machine) {
     //Arrange
-    machine.putCoins(10);
+    machine.putCoins(8);
     
     //Act
     machine.selectGame(new TicTacToeGame());
     
     //Assert
-    assertEquals(machine.getState().toString(), "PLAY_GAME");  
+    assertEquals(machine.getState().toString(), "SELECT_GAME");  
   }
   
   @Test(dataProvider = "arcadeMachineFakeIO", expectedExceptions = IllegalStateException.class)

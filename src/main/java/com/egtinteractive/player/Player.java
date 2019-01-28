@@ -3,7 +3,7 @@ package com.egtinteractive.player;
 import com.egtinteractive.board.Marker;
 
 public class Player {
-  private Marker marker;
+  private final Marker marker;
 
   public Player() {
     this.marker = Marker.X;

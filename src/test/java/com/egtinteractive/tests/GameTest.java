@@ -12,21 +12,21 @@ public class GameTest {
     return Provider.arcadeMachineConsoleIO();
   }
 
-  @Test(dataProvider = "arcadeMachineConsoleIO")
-  public void f(final ArcadeMachine machine) {
-    // Arrange
-    int coins = 10;
-    machine.putCoins(coins);
-    machine.selectGame(new TicTacToeGame());
-
-    // Act
-    machine.playGame();
-    while (!machine.getGame().isOver()) {
-      machine.getIo().readNextInt();
-    }
-
-    // Assert
-    
-  }
+//  @Test(dataProvider = "arcadeMachineConsoleIO")
+//  public void f(final ArcadeMachine machine) {
+//    // Arrange
+//    int coins = 10;
+//    machine.putCoins(coins);
+//    machine.selectGame(new TicTacToeGame());
+//
+//    // Act
+//    machine.playGame();
+//    while (!machine.getGame().isOver()) {
+//      machine.getIo().readNextInt();
+//    }
+//
+//    // Assert
+//    
+//  }
 
 }

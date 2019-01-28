@@ -15,5 +15,4 @@ public interface Game {
   public void showGame();
 
   public boolean startGame(final Game game, final InputOutput io);
-  
 }

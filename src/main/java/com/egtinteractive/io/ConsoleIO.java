@@ -18,7 +18,7 @@ public class ConsoleIO implements InputOutput {
   public String read() {
     return scanner.nextLine();
   }
-  
+
   @Override
   public void close() {
     scanner.close();

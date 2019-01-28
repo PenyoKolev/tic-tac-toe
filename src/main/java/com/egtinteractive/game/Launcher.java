@@ -18,7 +18,6 @@ public class Launcher {
     while (!game.isOver()) {
       io.write("Your next move is: ");
       game.showGame();
-
       int x = io.readNextInt();
       if (x == -1) {
         break;
@@ -29,7 +28,7 @@ public class Launcher {
     if (game.result() == Result.PLAYER_WIN) {
       io.write("Please, enter your name:");
       io.read();
-      String name = io.read();
+      final String name = io.read();
       int id = query.getId(name);
       if (id != 0) {
         query.addWinGameKnownPlayer(id);
