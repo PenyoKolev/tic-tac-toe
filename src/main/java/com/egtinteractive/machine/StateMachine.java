@@ -10,9 +10,9 @@ public enum StateMachine {
       if (coins < 0) {
         machine.getIo().write("Negative coins are not accepted!");
         machine.setState(SELECT_GAME);
+        return coins;
       }
       machine.setBalance(machine.getBalance() + coins);
-
       return coins;
     }
 

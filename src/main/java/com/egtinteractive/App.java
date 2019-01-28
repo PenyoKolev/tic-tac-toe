@@ -10,10 +10,9 @@ public class App {
   public static void main(String[] args) {
     
     Machine machine = new ArcadeMachine(new ConsoleIO());
- //   machine.putCoins(40);
-    machine.selectGame(new TicTacToeGame());
     machine.putCoins(40);
     machine.selectGame(new TicTacToeGame());
     machine.playGame();
+    
   }
 }
