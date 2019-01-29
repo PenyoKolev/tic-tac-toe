@@ -22,6 +22,10 @@ public class Launcher {
       if (x == -1) {
         break;
       }
+      if (x > 8) {
+        io.write("Choose a number between 0 and 8");
+        continue;
+      }
       game.move(x);
     }
     final Queries query = new Queries();
@@ -32,7 +36,7 @@ public class Launcher {
       int id = query.getId(name);
       if (id != 0) {
         query.addWinGameKnownPlayer(id);
-      } else {
+      } else if (name.length() != 0) {
         query.addWinGameUnknownPlayer(name);
       }
     } else {
