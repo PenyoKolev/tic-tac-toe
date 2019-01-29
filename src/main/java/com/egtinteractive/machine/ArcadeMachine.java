@@ -37,6 +37,10 @@ public class ArcadeMachine implements Machine {
   public void setState(final StateMachine state) {
     this.state = state;
   }
+  
+  public String getStateName() {
+    return state.name();
+  }
 
   public int getBalance() {
     return balance;

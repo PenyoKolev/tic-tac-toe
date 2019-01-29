@@ -29,7 +29,7 @@ public class PlayGameTest {
     }
 
     // Assert
-    assertEquals(machine.getState().toString(), "SELECT_GAME");
+    assertEquals(machine.getStateName(), "SELECT_GAME");
   }
 
   @Test(dataProvider = "arcadeMachineFakeIO", expectedExceptions = IllegalStateException.class)

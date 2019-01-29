@@ -22,7 +22,7 @@ public class SelectGameTest {
     machine.selectGame(new TicTacToeGame());
     
     //Assert
-    assertEquals(machine.getState().toString(), "PLAY_GAME");  
+    assertEquals(machine.getStateName(), "PLAY_GAME");  
   }
   
   @Test(dataProvider = "arcadeMachineFakeIO")
@@ -34,7 +34,7 @@ public class SelectGameTest {
     machine.selectGame(new TicTacToeGame());
     
     //Assert
-    assertEquals(machine.getState().toString(), "SELECT_GAME");  
+    assertEquals(machine.getStateName(), "SELECT_GAME");  
   }
   
   @Test(dataProvider = "arcadeMachineFakeIO", expectedExceptions = IllegalStateException.class)
