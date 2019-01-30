@@ -38,17 +38,9 @@ public class TicTacToeBoard implements Board {
     }
   }
 
-  /*
-   * [WARNING] author ivailozd
-   *
-   * Adhering to naming convention this method should return a boolean.
-   * Either rename it or return a boolean. Which approach will make the method
-   * more usable?
-   *
-   */
   @Override
-  public Marker isFree(final int position) {
-    return freeCells[position];
+  public boolean isFree(final int position) {
+    return freeCells[position] == Marker.EMPTY;
   }
 
   @Override
@@ -59,5 +51,42 @@ public class TicTacToeBoard implements Board {
   @Override
   public Marker[] getFreeCells() {
     return freeCells;
+  }
+
+  @Override
+  public boolean hasWinner() {
+    return checkRows() || checkColumns() || checkDiagonals();
+  }
+
+  public boolean checkRows() {
+    for (int i = 0; i < 3; i++) {
+      final Marker[] row = this.getGrid()[i];
+      if (row[0] == row[1] && row[1] == row[2] && row[2] != Marker.EMPTY) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  public boolean checkColumns() {
+    for (int i = 0; i < 3; i++) {
+      if (getGrid()[0][i] == getGrid()[1][i]
+          && getGrid()[1][i] == getGrid()[2][i]
+          && getGrid()[2][i] != Marker.EMPTY) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  public boolean checkDiagonals() {
+    final Marker[][] grid = getGrid();
+    if (grid[0][0] == grid[1][1] && grid[1][1] == grid[2][2] && grid[2][2] != Marker.EMPTY) {
+      return true;
+    }
+    if (grid[0][2] == grid[1][1] && grid[1][1] == grid[2][0] && grid[2][0] != Marker.EMPTY) {
+      return true;
+    }
+    return false;
   }
 }

@@ -47,17 +47,17 @@ public class TicTacToeGame implements Game {
    *
    */
   public void move(final int position) {
-    if (getBoard().isFree(position) != Marker.EMPTY) {
+    if (getBoard().isFree(position) == false) {
       getIo().write("Position already in use!");
       return;
     }
     playerMove(position);
-    if (isWin()) {
+    if (board.hasWinner()) {
       resultHelper("Player win !!!", Result.PLAYER_WIN);
       return;
     }
     aiMove();
-    if (isWin()) {
+    if (board.hasWinner()) {
       resultHelper("Computer win !!!", Result.COMPUTER_WIN);
       return;
     }
@@ -101,51 +101,7 @@ public class TicTacToeGame implements Game {
     getBoard().getGrid()[row][col] = marker;
     getBoard().getFreeCells()[randomElement] = player.getMarker();
   }
-
-  public boolean isWin() {
-    return checkRows() || checkColumns() || checkDiagonals();
-  }
-
-  /*
-   * [WARNING] author ivailozd
-   *
-   * These checks should be board's responsibility because it knows its size.
-   * And if the Board interface has just one method, e.g. hasWinner(),
-   * there could be boards with different winning rules.
-   *
-   */
-  public boolean checkRows() {
-    for (int i = 0; i < 3; i++) {
-      final Marker[] row = getBoard().getGrid()[i];
-      if (row[0] == row[1] && row[1] == row[2] && row[2] != Marker.EMPTY) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  public boolean checkColumns() {
-    for (int i = 0; i < 3; i++) {
-      if (getBoard().getGrid()[0][i] == getBoard().getGrid()[1][i]
-          && getBoard().getGrid()[1][i] == getBoard().getGrid()[2][i]
-          && getBoard().getGrid()[2][i] != Marker.EMPTY) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  public boolean checkDiagonals() {
-    final Marker[][] grid = getBoard().getGrid();
-    if (grid[0][0] == grid[1][1] && grid[1][1] == grid[2][2] && grid[2][2] != Marker.EMPTY) {
-      return true;
-    }
-    if (grid[0][2] == grid[1][1] && grid[1][1] == grid[2][0] && grid[2][0] != Marker.EMPTY) {
-      return true;
-    }
-    return false;
-  }
-
+  
   private void resultHelper(String string, Result result) {
     getIo().write(string);
     setOver(true);

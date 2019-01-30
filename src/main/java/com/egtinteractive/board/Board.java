@@ -6,7 +6,9 @@ public interface Board {
 
   public void showBoard(final InputOutput io);
 
-  public Marker isFree(final int position);
+  public boolean isFree(final int position);
+  
+  public boolean hasWinner();
 
   public Marker[][] getGrid();
 
