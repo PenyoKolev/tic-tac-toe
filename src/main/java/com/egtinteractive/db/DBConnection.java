@@ -1,28 +1,37 @@
 package com.egtinteractive.db;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Properties;
 import com.mysql.jdbc.Driver;
 
 public class DBConnection {
-
-  /*
-   * [WARNING] author ivailozd
-   *
-   * Make this a configuration
-   *
-   */
-  private static final String url = "jdbc:mysql://localhost:3306/game_db";
-  private static final String user = "root";
-  private static final String password = "3211";
-
+  
+  
+                    //TODO single connection
+  
+  
   public static Connection getConnection() {
     try {
       DriverManager.registerDriver(new Driver());
-      return DriverManager.getConnection(url, user, password);
-    } catch (SQLException ex) {
-      throw new RuntimeException("Error connecting to the database", ex);
+      Properties p = getCredentials("src/main/resources/configuration.properties");
+      return DriverManager.getConnection(
+          p.getProperty("url"), p.getProperty("user"), p.getProperty("password"));
+    } catch (SQLException e) {
+      throw new RuntimeException("Error connecting to the database", e);
     }
+  }
+
+  private static Properties getCredentials(String filePath) {
+    Properties p = new Properties();
+    try (FileInputStream fis = new FileInputStream(filePath)) {
+      p.load(fis);
+    } catch (IOException e) {
+      throw new RuntimeException("File not found", e);
+    }
+    return p;
   }
 }

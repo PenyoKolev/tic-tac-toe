@@ -14,7 +14,7 @@ public class ArcadeMachine implements Machine {
    *
    */       
   private final InputOutput io;
-  private Game game;        //TODO ckech if this should be final after all
+  private Game game;        //TODO check if this should be final after all
 
   public ArcadeMachine(final InputOutput io) {
     this.io = io;
