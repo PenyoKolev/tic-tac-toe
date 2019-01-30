@@ -11,6 +11,12 @@ import com.egtinteractive.player.Player;
 
 public class TicTacToeGame implements Game {
 
+  /*
+   * [WARNING] author ivailozd
+   *
+   * Should some of these be final?
+   *
+   */
   private final Player player;
   private Board board;
   private boolean isOver;
@@ -34,6 +40,12 @@ public class TicTacToeGame implements Game {
     return true;
   }
 
+  /*
+   * [WARNING] author ivailozd
+   *
+   * Hard-coded playing order and code repetition.
+   *
+   */
   public void move(final int position) {
     if (getBoard().isFree(position) != Marker.EMPTY) {
       getIo().write("Position already in use!");
@@ -59,6 +71,12 @@ public class TicTacToeGame implements Game {
     getBoard().getFreeCells()[position] = player.getMarker();
   }
 
+  /*
+   * [WARNING] author ivailozd
+   *
+   * How could the AI logic be changed in the future?
+   *
+   */
   public void aiMove() {
     final List<Integer> freeCells = new ArrayList<>();
     for (int i = 0; i < getBoard().getFreeCells().length; i++) {
@@ -88,6 +106,14 @@ public class TicTacToeGame implements Game {
     return checkRows() || checkColumns() || checkDiagonals();
   }
 
+  /*
+   * [WARNING] author ivailozd
+   *
+   * These checks should be board's responsibility because it knows its size.
+   * And if the Board interface has just one method, e.g. hasWinner(),
+   * there could be boards with different winning rules.
+   *
+   */
   public boolean checkRows() {
     for (int i = 0; i < 3; i++) {
       final Marker[] row = getBoard().getGrid()[i];

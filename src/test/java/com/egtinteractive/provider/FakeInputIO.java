@@ -6,6 +6,12 @@ import com.egtinteractive.io.InputOutput;
 
 public class FakeInputIO implements InputOutput {
 
+  /*
+   * [WARNING] author ivailozd
+   *
+   * It is not used???
+   *
+   */
   private final Scanner scanner;
 
   public FakeInputIO() {

@@ -38,6 +38,14 @@ public class TicTacToeBoard implements Board {
     }
   }
 
+  /*
+   * [WARNING] author ivailozd
+   *
+   * Adhering to naming convention this method should return a boolean.
+   * Either rename it or return a boolean. Which approach will make the method
+   * more usable?
+   *
+   */
   @Override
   public Marker isFree(final int position) {
     return freeCells[position];

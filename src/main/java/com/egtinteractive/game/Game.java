@@ -14,5 +14,11 @@ public interface Game {
 
   public void showGame();
 
+  /*
+   * [WARNING] author ivailozd
+   *
+   * Why is a game object passed here?
+   *
+   */
   public boolean startGame(final Game game, final InputOutput io);
 }

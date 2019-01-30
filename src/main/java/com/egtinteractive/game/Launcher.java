@@ -14,6 +14,12 @@ public class Launcher {
     this.io = io;
   }
 
+  /*
+   * [WARNING] author ivailozd
+   *
+   *  Bounded to particular type of games
+   *
+   */
   public boolean start() {
     while (!game.isOver()) {
       io.write("Your next move is: ");

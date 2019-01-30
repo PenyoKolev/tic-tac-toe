@@ -13,6 +13,13 @@ public enum StateMachine {
         return coins;
       }
       machine.setBalance(machine.getBalance() + coins);
+
+      /*
+       * [WARNING] author ivailozd
+       *
+       * Why is the input returned?
+       *
+       */
       return coins;
     }
 

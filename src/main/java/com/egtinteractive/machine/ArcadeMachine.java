@@ -3,9 +3,22 @@ package com.egtinteractive.machine;
 import com.egtinteractive.game.Game;
 import com.egtinteractive.io.InputOutput;
 
+/*
+ * [WARNING] author ivailozd
+ *
+ * Some of the methods shouldn't be public
+ *
+ */
 public class ArcadeMachine implements Machine {
   private StateMachine state;
   private int balance;
+
+  /*
+   * [WARNING] author ivailozd
+   *
+   * Why are these not final fields?
+   *
+   */
   private Game game;
   private InputOutput io;
 
@@ -20,6 +33,12 @@ public class ArcadeMachine implements Machine {
     return this.state.putCoins(this, coins);
   }
 
+  /*
+   * [WARNING] author ivailozd
+   *
+   * Why is the game object returned?
+   *
+   */
   @Override
   public Game selectGame(final Game game) {
     return this.state.selectGame(this, game);
