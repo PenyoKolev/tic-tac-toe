@@ -7,9 +7,15 @@ import com.mysql.jdbc.Driver;
 
 public class DBConnection {
 
+  /*
+   * [WARNING] author ivailozd
+   *
+   * Make this a configuration
+   *
+   */
   private static final String url = "jdbc:mysql://localhost:3306/game_db";
   private static final String user = "root";
-  private static final String password = "3211";
+  private static final String password = "3569";
 
   public static Connection getConnection() {
     try {

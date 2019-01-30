@@ -15,6 +15,12 @@ public class PlayGameTest {
     return Provider.arcadeMachineFakeIO();
   }
 
+  /*
+   * [WARNING] author ivailozd
+   *
+   * Not a good test because the result from the game is unpredictable and is not asserted.
+   *
+   */
   @Test(dataProvider = "arcadeMachineFakeIO")
   public void playGameWhenFinishGameStateShouldBeSELECT_GAME(final ArcadeMachine machine) {
     // Arrange
