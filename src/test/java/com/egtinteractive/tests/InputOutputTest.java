@@ -2,6 +2,8 @@ package com.egtinteractive.tests;
 
 import static org.testng.Assert.assertEquals;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import com.egtinteractive.io.ConsoleIO;
@@ -42,6 +44,8 @@ public class InputOutputTest {
     // Assert
     assertEquals(result, fakeInput.charAt(0) - 48);
   }
+  
+  
 
 //  @Test(dataProvider = "arcadeMachineConsoleIO")
 //  public void writeShouldWrite(final ArcadeMachine machine) {
@@ -55,6 +59,7 @@ public class InputOutputTest {
 //
 //    // Assert
 //    assertEquals(outContent.toString(), "Hello\n");
+//    
 //    System.setOut(System.out);
 //  }
 }

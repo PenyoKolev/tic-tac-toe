@@ -15,7 +15,7 @@ public class DBConnection {
    */
   private static final String url = "jdbc:mysql://localhost:3306/game_db";
   private static final String user = "root";
-  private static final String password = "3569";
+  private static final String password = "3211";
 
   public static Connection getConnection() {
     try {

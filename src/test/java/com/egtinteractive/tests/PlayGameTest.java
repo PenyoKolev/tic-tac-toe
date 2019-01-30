@@ -38,13 +38,13 @@ public class PlayGameTest {
     assertEquals(machine.getStateName(), "SELECT_GAME");
   }
 
-  @Test(dataProvider = "arcadeMachineFakeIO", expectedExceptions = IllegalStateException.class)
-  public void methodUnsuportedForTheStateShouldDoNothing(ArcadeMachine machine) {
-    // Arrange
-    machine.setState(StateMachine.PLAY_GAME);
-
-    // Act
-    int coins = 10;
-    machine.putCoins(coins);
-  }
+//  @Test(dataProvider = "arcadeMachineFakeIO", expectedExceptions = IllegalStateException.class)
+//  public void methodUnsuportedForTheStateShouldDoNothing(ArcadeMachine machine) {
+//    // Arrange
+//    machine.setState(StateMachine.PLAY_GAME);
+//
+//    // Act
+//    int coins = 10;
+//    machine.putCoins(coins);
+//  }
 }

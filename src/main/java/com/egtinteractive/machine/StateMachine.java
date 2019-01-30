@@ -6,25 +6,16 @@ public enum StateMachine {
   SELECT_GAME {
 
     @Override
-    public int putCoins(final ArcadeMachine machine, final int coins) {
+    public void putCoins(final ArcadeMachine machine, final int coins) {
       if (coins < 0) {
         machine.getIo().write("Negative coins are not accepted!");
         machine.setState(SELECT_GAME);
-        return coins;
       }
       machine.setBalance(machine.getBalance() + coins);
-
-      /*
-       * [WARNING] author ivailozd
-       *
-       * Why is the input returned?
-       *
-       */
-      return coins;
     }
 
     @Override
-    public Game selectGame(final ArcadeMachine machine, final Game game) {
+    public void selectGame(final ArcadeMachine machine, final Game game) {
       if (machine.getBalance() < game.getPrice()) {
         machine
             .getIo()
@@ -41,7 +32,6 @@ public enum StateMachine {
         machine.setGame(game);
         machine.setState(PLAY_GAME);
       }
-      return game;
     }
   },
 
@@ -56,11 +46,11 @@ public enum StateMachine {
     }
   };
 
-  public int putCoins(final ArcadeMachine machine, final int coins) {
+  public void putCoins(final ArcadeMachine machine, final int coins) {
     throw new IllegalStateException("Coins are not accepted in current state!");
   }
 
-  public Game selectGame(final ArcadeMachine machine, final Game game) {
+  public void selectGame(final ArcadeMachine machine, final Game game) {
     throw new IllegalStateException("Cannot select game in current state!");
   }
 
