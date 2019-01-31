@@ -2,14 +2,9 @@ package com.egtinteractive.player;
 
 import com.egtinteractive.board.Marker;
 
-public class Player {
-  private final Marker marker;
+public interface Player {
 
-  public Player() {
-    this.marker = Marker.X;
-  }
+  public Marker getMarker();
 
-  public Marker getMarker() {
-    return marker;
-  }
+  public void setMarker(Marker marker);
 }

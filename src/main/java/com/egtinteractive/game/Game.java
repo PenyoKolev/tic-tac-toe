@@ -4,8 +4,6 @@ public interface Game {
 
   public int getPrice();
 
-  public void move(final int position);
-
   public boolean isOver();
 
   public Result result();

@@ -3,6 +3,8 @@ package com.egtinteractive.tests;
 import static org.testng.Assert.assertEquals;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+import com.egtinteractive.board.Marker;
+import com.egtinteractive.game.Order;
 import com.egtinteractive.game.TicTacToeGame;
 import com.egtinteractive.io.ConsoleIO;
 import com.egtinteractive.machine.ArcadeMachine;
@@ -41,6 +43,6 @@ public class SelectGameTest {
   @Test(dataProvider = "arcadeMachineFakeIO", expectedExceptions = IllegalStateException.class)
   public void methodUnsuportedForTheStateShouldDoNothing(ArcadeMachine machine) {
     // Act
-    machine.playGame();
+    machine.playGame(Order.PLAYER_ONE_FIRST, Marker.X);
   }
 }

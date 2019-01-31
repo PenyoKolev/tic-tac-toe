@@ -3,6 +3,8 @@ package com.egtinteractive.tests;
 import static org.testng.Assert.assertEquals;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+import com.egtinteractive.board.Marker;
+import com.egtinteractive.game.Order;
 import com.egtinteractive.game.TicTacToeGame;
 import com.egtinteractive.io.ConsoleIO;
 import com.egtinteractive.machine.ArcadeMachine;
@@ -30,7 +32,7 @@ public class PlayGameTest {
     machine.selectGame(new TicTacToeGame(new ConsoleIO()));
 
     // Act
-    machine.playGame();
+    machine.playGame(Order.PLAYER_ONE_FIRST, Marker.X);
     while (!machine.getGame().isOver()) {
       machine.getIo().readNextInt();
     }

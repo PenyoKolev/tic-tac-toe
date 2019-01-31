@@ -1,6 +1,8 @@
 package com.egtinteractive.tests;
 
 import org.testng.annotations.Test;
+import com.egtinteractive.board.Marker;
+import com.egtinteractive.game.Order;
 import com.egtinteractive.machine.ArcadeMachine;
 import com.egtinteractive.provider.Provider;
 import static org.testng.Assert.assertEquals;
@@ -44,7 +46,7 @@ public class PutCoinsTest {
   @Test(dataProvider = "arcadeMachineFakeIO", expectedExceptions = IllegalStateException.class)
   public void methodUnsuportedForTheStateShouldDoNothing(ArcadeMachine machine) {
     // Act
-    machine.playGame();
+    machine.playGame(Order.PLAYER_ONE_FIRST, Marker.X);
   }
 
   

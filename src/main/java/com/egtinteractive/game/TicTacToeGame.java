@@ -1,35 +1,40 @@
 package com.egtinteractive.game;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 import com.egtinteractive.board.TicTacToeBoard;
 import com.egtinteractive.db.Queries;
 import com.egtinteractive.io.InputOutput;
+import com.egtinteractive.ai.AI;
+import com.egtinteractive.ai.AITicTacToe;
 import com.egtinteractive.board.Board;
 import com.egtinteractive.board.Marker;
-import com.egtinteractive.player.Player;
+import com.egtinteractive.player.HumanPlayer;
 
 public class TicTacToeGame implements Game {
 
-  /*
-   * [WARNING] author ivailozd
-   *
-   * Should some of these be final?
-   *
-   */
-  private final Player player;
+  private final HumanPlayer player;
   private final Board board;
   private final InputOutput io;
   private final int price;
+  private final Marker marker;
+  private final Order order;
   private boolean isOver;
   private Result result;
+  private final AI ai;
 
-  public TicTacToeGame(InputOutput io) {
-    this.player = new Player();
+  public TicTacToeGame(InputOutput io, Marker marker, Order order) {
+    this.player = new HumanPlayer(marker);
     this.board = new TicTacToeBoard();
     this.io = io;
     this.price = 10;
+    if (marker == Marker.X) {                       //TODO remove logic from here
+      this.ai = new AITicTacToe(board, Marker.O);
+    } else {
+      this.ai = new AITicTacToe(board, Marker.X);
+    }
+    
+    this.marker = marker;
+    this.order = order;
   }
 
   @Override
@@ -45,8 +50,64 @@ public class TicTacToeGame implements Game {
         io.write("Choose a number between 0 and 8");
         continue;
       }
-      move(x);
+
+      if (getBoard().isFree(x) == false) {
+        getIo().write("Position already in use!");
+        continue;
+      }
+
+      if (order == Order.PLAYER_ONE_FIRST) {
+        playerOneMove(x);
+        if (board.hasWinner()) {
+          resultHelper("Player win !!!", Result.PLAYER_WIN);
+          break;
+        }
+        playerTwoMove();
+        if (board.hasWinner()) {
+          resultHelper("Computer win !!!", Result.COMPUTER_WIN);
+          break;
+        }
+      } else {
+        playerTwoMove();
+        if (board.hasWinner()) {
+          resultHelper("Computer win !!!", Result.COMPUTER_WIN);
+          break;
+        }
+        playerOneMove(x);
+        if (board.hasWinner()) {
+          resultHelper("Player win !!!", Result.PLAYER_WIN);
+          break;
+        }
+      }
     }
+    writeGameToDb();
+    showGame();
+    showHallOfFame();
+    return true;
+  }
+
+  /*
+   * [WARNING] author ivailozd
+   *
+   * Hard-coded playing order and code repetition.
+   *
+   */
+
+  public void playerOneMove(final int position) {
+    final int row = position / 3;
+    final int col = position % 3;
+
+    getBoard().getGrid()[row][col] = player.getMarker();
+    getBoard().getFreeCells()[position] = player.getMarker();
+  }
+
+  public void playerTwoMove() {
+    if (ai.move()) {
+      resultHelper("Draw !!!", Result.DRAW);
+    }
+  }
+
+  private void writeGameToDb() {
     final Queries query = new Queries();
     if (result() == Result.PLAYER_WIN) {
       io.write("Please, enter your name:");
@@ -61,75 +122,15 @@ public class TicTacToeGame implements Game {
     } else {
       query.addLoseGame();
     }
-    showGame();
+  }
+
+  private void showHallOfFame() {
+    final Queries query = new Queries();
     final ArrayList<String> result = query.topThree();
     io.write("\nHall of Fame:");
     for (String string : result) {
       io.write(string);
     }
-    return true;
-  }
-
-  /*
-   * [WARNING] author ivailozd
-   *
-   * Hard-coded playing order and code repetition.
-   *
-   */
-  public void move(final int position) {
-    if (getBoard().isFree(position) == false) {
-      getIo().write("Position already in use!");
-      return;
-    }
-    playerMove(position);
-    if (board.hasWinner()) {
-      resultHelper("Player win !!!", Result.PLAYER_WIN);
-      return;
-    }
-    aiMove();
-    if (board.hasWinner()) {
-      resultHelper("Computer win !!!", Result.COMPUTER_WIN);
-      return;
-    }
-  }
-
-  public void playerMove(final int position) {
-    final int row = position / 3;
-    final int col = position % 3;
-
-    getBoard().getGrid()[row][col] = player.getMarker();
-    getBoard().getFreeCells()[position] = player.getMarker();
-  }
-
-  /*
-   * [WARNING] author ivailozd
-   *
-   * How could the AI logic be changed in the future?
-   *
-   */
-  public void aiMove() {
-    final List<Integer> freeCells = new ArrayList<>();
-    for (int i = 0; i < getBoard().getFreeCells().length; i++) {
-      if (getBoard().getFreeCells()[i] == Marker.EMPTY) {
-        freeCells.add(i);
-      }
-    }
-    final Random rand = new Random();
-    if (freeCells.size() < 1) {
-      resultHelper("Draw !!!", Result.DRAW);
-      return;
-    }
-    final int randomElement = freeCells.get(rand.nextInt(freeCells.size()));
-    final int row = randomElement / 3;
-    final int col = randomElement % 3;
-    final Marker marker;
-    if (player.getMarker() == Marker.X) {
-      marker = Marker.O;
-    } else {
-      marker = Marker.X;
-    }
-    getBoard().getGrid()[row][col] = marker;
-    getBoard().getFreeCells()[randomElement] = player.getMarker();
   }
 
   private void resultHelper(String string, Result result) {
@@ -168,6 +169,10 @@ public class TicTacToeGame implements Game {
   @Override
   public int getPrice() {
     return price;
+  }
+
+  public Marker getMarker() {
+    return marker;
   }
 
   public Board getBoard() {
