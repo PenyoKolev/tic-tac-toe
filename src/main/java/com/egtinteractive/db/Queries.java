@@ -7,66 +7,100 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import javax.sql.DataSource;
 
 public class Queries {
 
   public void addWinGameKnownPlayer(final int id) {
-    try (final Connection connection = DBConnection.getConnection(); ) {
-      connection.setAutoCommit(false);
-      final PreparedStatement stmt =
-          connection.prepareStatement("update players set score = score + 1 where player_id = ?");
+    DataSource ds = DBFactory.getDataSource();
+    Connection con = null;
+    PreparedStatement stmt = null;
+    PreparedStatement stmt1 = null;
+    try {
+      con = ds.getConnection();
+      con.setAutoCommit(false);
+      stmt = con.prepareStatement("update players set score = score + 1 where player_id = ?");
       stmt.setInt(1, id);
       stmt.executeUpdate();
-      final PreparedStatement stmt1 =
-          connection.prepareStatement(
-              "insert into games(end_time, result) values(?, 'PLAYER_WIN')");
+      stmt1 = con.prepareStatement("insert into games(end_time, result) values(?, 'PLAYER_WIN')");
       stmt1.setString(
           1, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
       stmt1.executeUpdate();
-      connection.commit();
+      con.commit();
     } catch (SQLException e) {
       throw new RuntimeException(e);
+    } finally {
+      try {
+        if (stmt1 != null) stmt1.close();
+        if (stmt != null) stmt.close();
+        if (con != null) con.close();
+      } catch (SQLException e2) {
+        throw new RuntimeException(e2);
+      }
     }
   }
 
   public void addWinGameUnknownPlayer(final String name) {
-    try (final Connection connection = DBConnection.getConnection(); ) {
-      connection.setAutoCommit(false);
-      final PreparedStatement stmt =
-          connection.prepareStatement("insert into players (name) values (?)");
+    DataSource ds = DBFactory.getDataSource();
+    Connection con = null;
+    PreparedStatement stmt = null;
+    PreparedStatement stmt1 = null;
+    try {
+      con = ds.getConnection();
+      con.setAutoCommit(false);
+      stmt = con.prepareStatement("insert into players (name) values (?)");
       stmt.setString(1, name);
       stmt.executeUpdate();
-      final PreparedStatement stmt1 =
-          connection.prepareStatement(
-              "insert into games(end_time, result) values(?, 'PLAYER_WIN')");
+      stmt1 = con.prepareStatement("insert into games(end_time, result) values(?, 'PLAYER_WIN')");
       stmt1.setString(
           1, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
       stmt1.executeUpdate();
-      connection.commit();
+      con.commit();
     } catch (SQLException e) {
       throw new RuntimeException(e);
+    } finally {
+      try {
+        if (stmt1 != null) stmt1.close();
+        if (stmt != null) stmt.close();
+        if (con != null) con.close();
+      } catch (SQLException e2) {
+        throw new RuntimeException(e2);
+      }
     }
   }
 
   public void addLoseGame() {
-    try (final Connection connection = DBConnection.getConnection(); ) {
-      final PreparedStatement stmt =
-          connection.prepareStatement(
-              "insert into games(end_time, result) values(?, 'COMPUTER_WIN')");
+    DataSource ds = DBFactory.getDataSource();
+    Connection con = null;
+    PreparedStatement stmt = null;
+    try {
+      con = ds.getConnection();
+      stmt = con.prepareStatement("insert into games(end_time, result) values(?, 'COMPUTER_WIN')");
       stmt.setString(
           1, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
       stmt.executeUpdate();
     } catch (SQLException e) {
       throw new RuntimeException(e);
+    } finally {
+      try {
+        if (stmt != null) stmt.close();
+        if (con != null) con.close();
+      } catch (SQLException e2) {
+        throw new RuntimeException(e2);
+      }
     }
   }
 
   public int getId(final String name) {
-    try (final Connection connection = DBConnection.getConnection(); ) {
-      final PreparedStatement stmt =
-          connection.prepareStatement("select * from players where name = ?");
+    DataSource ds = DBFactory.getDataSource();
+    Connection con = null;
+    PreparedStatement stmt = null;
+    ResultSet rs = null;
+    try {
+      con = ds.getConnection();
+      stmt = con.prepareStatement("select * from players where name = ?");
       stmt.setString(1, name);
-      final ResultSet rs = stmt.executeQuery();
+      rs = stmt.executeQuery();
       if (rs.next()) {
         return rs.getInt("player_id");
       } else {
@@ -74,26 +108,46 @@ public class Queries {
       }
     } catch (SQLException e) {
       throw new RuntimeException(e);
+    } finally {
+      try {
+        if (rs != null) rs.close();
+        if (stmt != null) stmt.close();
+        if (con != null) con.close();
+      } catch (SQLException e2) {
+        throw new RuntimeException(e2);
+      }
     }
   }
 
   public ArrayList<String> topThree() {
     final ArrayList<String> result = new ArrayList<>();
-    try (final Connection connection = DBConnection.getConnection(); ) {
-      PreparedStatement stmt =
-          connection.prepareStatement(
+    DataSource ds = DBFactory.getDataSource();
+    Connection con = null;
+    PreparedStatement stmt = null;
+    ResultSet rs = null;
+    try {
+      con = ds.getConnection();
+      stmt =
+          con.prepareStatement(
               "select * from players "
                   + "where name not like '' "
                   + "order by score desc "
                   + "limit 3");
-      final ResultSet rs = stmt.executeQuery();
+      rs = stmt.executeQuery();
       while (rs.next()) {
         result.add(rs.getInt("score") + " " + rs.getString("name"));
       }
       return result;
-
     } catch (SQLException e) {
       throw new RuntimeException(e);
+    } finally {
+      try {
+        if (rs != null) rs.close();
+        if (stmt != null) stmt.close();
+        if (con != null) con.close();
+      } catch (SQLException e2) {
+        throw new RuntimeException(e2);
+      }
     }
   }
 }
