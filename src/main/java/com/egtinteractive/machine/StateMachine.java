@@ -39,7 +39,7 @@ public enum StateMachine {
 
     @Override
     public void playGame(final ArcadeMachine machine) {
-      boolean isOver = machine.getGame().startGame(machine.getGame(), machine.getIo());
+      boolean isOver = machine.getGame().startGame();
       if (isOver) {
         machine.setState(SELECT_GAME);
       }

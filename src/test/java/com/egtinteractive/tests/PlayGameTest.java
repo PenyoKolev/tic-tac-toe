@@ -4,6 +4,7 @@ import static org.testng.Assert.assertEquals;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import com.egtinteractive.game.TicTacToeGame;
+import com.egtinteractive.io.ConsoleIO;
 import com.egtinteractive.machine.ArcadeMachine;
 import com.egtinteractive.machine.StateMachine;
 import com.egtinteractive.provider.Provider;
@@ -26,7 +27,7 @@ public class PlayGameTest {
     // Arrange
     int coins = 10;
     machine.putCoins(coins);
-    machine.selectGame(new TicTacToeGame());
+    machine.selectGame(new TicTacToeGame(new ConsoleIO()));
 
     // Act
     machine.playGame();

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import com.egtinteractive.board.TicTacToeBoard;
+import com.egtinteractive.db.Queries;
 import com.egtinteractive.io.InputOutput;
 import com.egtinteractive.board.Board;
 import com.egtinteractive.board.Marker;
@@ -18,25 +19,54 @@ public class TicTacToeGame implements Game {
    *
    */
   private final Player player;
-  private Board board;
+  private final Board board;
+  private final InputOutput io;
+  private final int price;
   private boolean isOver;
   private Result result;
-  private int price;
-  private Launcher launcher;
-  private InputOutput io;
 
-  public TicTacToeGame() {
-    setBoard(new TicTacToeBoard());
-    player = new Player();
-    setResult(Result.DRAW);
-    setPrice(10);
+  public TicTacToeGame(InputOutput io) {
+    this.player = new Player();
+    this.board = new TicTacToeBoard();
+    this.io = io;
+    this.price = 10;
   }
 
   @Override
-  public boolean startGame(final Game game, final InputOutput io) {
-    setIo(io);
-    launcher = new Launcher(game, io);
-    launcher.start();
+  public boolean startGame() {
+    while (!isOver) {
+      io.write("Your next move is: ");
+      showGame();
+      int x = io.readNextInt();
+      if (x == -1) {
+        break;
+      }
+      if (x > 8) {
+        io.write("Choose a number between 0 and 8");
+        continue;
+      }
+      move(x);
+    }
+    final Queries query = new Queries();
+    if (result() == Result.PLAYER_WIN) {
+      io.write("Please, enter your name:");
+      io.read();
+      final String name = io.read();
+      int id = query.getId(name);
+      if (id != 0) {
+        query.addWinGameKnownPlayer(id);
+      } else if (name.length() != 0) {
+        query.addWinGameUnknownPlayer(name);
+      }
+    } else {
+      query.addLoseGame();
+    }
+    showGame();
+    final ArrayList<String> result = query.topThree();
+    io.write("\nHall of Fame:");
+    for (String string : result) {
+      io.write(string);
+    }
     return true;
   }
 
@@ -101,7 +131,7 @@ public class TicTacToeGame implements Game {
     getBoard().getGrid()[row][col] = marker;
     getBoard().getFreeCells()[randomElement] = player.getMarker();
   }
-  
+
   private void resultHelper(String string, Result result) {
     getIo().write(string);
     setOver(true);
@@ -130,10 +160,6 @@ public class TicTacToeGame implements Game {
     this.result = result;
   }
 
-  public void setPrice(final int price) {
-    this.price = price;
-  }
-
   @Override
   public Result result() {
     return result;
@@ -148,15 +174,7 @@ public class TicTacToeGame implements Game {
     return board;
   }
 
-  public void setBoard(final Board board) {
-    this.board = board;
-  }
-
   public InputOutput getIo() {
     return io;
-  }
-
-  public void setIo(final InputOutput io) {
-    this.io = io;
   }
 }
