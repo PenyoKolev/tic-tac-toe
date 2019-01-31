@@ -12,7 +12,7 @@ public class App {
 
   public static void main(String[] args) {      //TODO fix input output parameter
     InputOutput io = new ConsoleIO();
-    Marker marker = Marker.O;
+    Marker marker = Marker.X;
     Machine machine = new ArcadeMachine(io);
     machine.putCoins(40);
     machine.selectGame(new TicTacToeGame(io, marker, Order.PLAYER_ONE_FIRST));

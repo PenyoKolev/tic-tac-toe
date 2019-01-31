@@ -16,9 +16,7 @@ public class TicTacToeGame implements Game {
   private final Board board;
   private final InputOutput io;
   private final int price;
-  private final Marker marker;
   private final Order order;
-  private boolean isOver;
   private Result result;
   private final AI ai;
 
@@ -27,58 +25,21 @@ public class TicTacToeGame implements Game {
     this.board = new TicTacToeBoard();
     this.io = io;
     this.price = 10;
-    if (marker == Marker.X) {                       //TODO remove logic from here
+    this.order = order;
+    if (marker == Marker.X) { // TODO remove logic from here
       this.ai = new AITicTacToe(board, Marker.O);
     } else {
       this.ai = new AITicTacToe(board, Marker.X);
     }
-    
-    this.marker = marker;
-    this.order = order;
   }
 
   @Override
   public boolean startGame() {
-    while (!isOver) {
-      io.write("Your next move is: ");
-      showGame();
-      int x = io.readNextInt();
-      if (x == -1) {
-        break;
-      }
-      if (x > 8) {
-        io.write("Choose a number between 0 and 8");
-        continue;
-      }
-
-      if (getBoard().isFree(x) == false) {
-        getIo().write("Position already in use!");
-        continue;
-      }
-
-      if (order == Order.PLAYER_ONE_FIRST) {
-        playerOneMove(x);
-        if (board.hasWinner()) {
-          resultHelper("Player win !!!", Result.PLAYER_WIN);
-          break;
-        }
-        playerTwoMove();
-        if (board.hasWinner()) {
-          resultHelper("Computer win !!!", Result.COMPUTER_WIN);
-          break;
-        }
-      } else {
-        playerTwoMove();
-        if (board.hasWinner()) {
-          resultHelper("Computer win !!!", Result.COMPUTER_WIN);
-          break;
-        }
-        playerOneMove(x);
-        if (board.hasWinner()) {
-          resultHelper("Player win !!!", Result.PLAYER_WIN);
-          break;
-        }
-      }
+    if (order == Order.PLAYER_ONE_FIRST) {
+      while (!orderFirstPlayer()) ;
+    }
+    if (order == Order.PLAYER_TWO_FIRST) {
+      while (!orderSecondPlayer()) ;
     }
     writeGameToDb();
     showGame();
@@ -86,14 +47,74 @@ public class TicTacToeGame implements Game {
     return true;
   }
 
-  /*
-   * [WARNING] author ivailozd
-   *
-   * Hard-coded playing order and code repetition.
-   *
-   */
+  private boolean orderFirstPlayer() {
+    showGame();
+    if (ai.getFreeCells().size() < 1) {
+      resultHelper("Draw !!!", Result.DRAW);
+      return true;
+    }
+    io.write("Your next move is: ");
 
-  public void playerOneMove(final int position) {
+    int position = io.readNextInt();
+
+    if (!isValidPosition(position)) {
+      return false;
+    }
+    playerOneMove(position);
+    if (board.hasWinner()) {
+      resultHelper("Player win !!!", Result.PLAYER_WIN);
+      return true;
+    }
+    playerTwoMove();
+    if (board.hasWinner()) {
+      resultHelper("Computer win !!!", Result.COMPUTER_WIN);
+      return true;
+    }
+    return false;
+  }
+
+  private boolean orderSecondPlayer() {
+    playerTwoMove();
+    showGame();
+    if (board.hasWinner()) {
+      resultHelper("Computer win !!!", Result.COMPUTER_WIN);
+      return true;
+    }
+    if (ai.getFreeCells().size() < 1) {
+      resultHelper("Draw !!!", Result.DRAW);
+      return true;
+    }
+
+    io.write("Your next move is: ");
+    while (true) {
+      int position = io.readNextInt();
+      if (!isValidPosition(position)) {
+        continue;
+      } else {
+        playerOneMove(position);
+        break;
+      }
+    }
+    if (board.hasWinner()) {
+      resultHelper("Player win !!!", Result.PLAYER_WIN);
+      return true;
+    }
+    return false;
+  }
+
+  private boolean isValidPosition(int position) {
+    if (position > 8 || position < 0) {
+      io.write("Choose a number between 0 and 8");
+      return false;
+    }
+    if (getBoard().isFree(position) == false) {
+      getIo().write("Position already in use!");
+      return false;
+    }
+    return true;
+  }
+
+  private void playerOneMove(final int position) {
     final int row = position / 3;
     final int col = position % 3;
 
@@ -101,7 +122,7 @@ public class TicTacToeGame implements Game {
     getBoard().getFreeCells()[position] = player.getMarker();
   }
 
-  public void playerTwoMove() {
+  private void playerTwoMove() {
     if (ai.move()) {
       resultHelper("Draw !!!", Result.DRAW);
     }
@@ -109,7 +130,7 @@ public class TicTacToeGame implements Game {
 
   private void writeGameToDb() {
     final Queries query = new Queries();
-    if (result() == Result.PLAYER_WIN) {
+    if (getResult() == Result.PLAYER_WIN) {
       io.write("Please, enter your name:");
       io.read();
       final String name = io.read();
@@ -135,35 +156,11 @@ public class TicTacToeGame implements Game {
 
   private void resultHelper(String string, Result result) {
     getIo().write(string);
-    setOver(true);
     setResult(result);
   }
 
-  @Override
-  public void showGame() {
+  private void showGame() {
     getBoard().showBoard(io);
-  }
-
-  @Override
-  public boolean isOver() {
-    return isOver;
-  }
-
-  public void setOver(final boolean isOver) {
-    this.isOver = isOver;
-  }
-
-  public Result getResult() {
-    return result;
-  }
-
-  public void setResult(final Result result) {
-    this.result = result;
-  }
-
-  @Override
-  public Result result() {
-    return result;
   }
 
   @Override
@@ -171,8 +168,12 @@ public class TicTacToeGame implements Game {
     return price;
   }
 
-  public Marker getMarker() {
-    return marker;
+  public Result getResult() {
+    return result;
+  }
+
+  private void setResult(final Result result) {
+    this.result = result;
   }
 
   public Board getBoard() {

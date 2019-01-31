@@ -46,7 +46,7 @@ public class PutCoinsTest {
   @Test(dataProvider = "arcadeMachineFakeIO", expectedExceptions = IllegalStateException.class)
   public void methodUnsuportedForTheStateShouldDoNothing(ArcadeMachine machine) {
     // Act
-    machine.playGame(Order.PLAYER_ONE_FIRST, Marker.X);
+    machine.playGame();
   }
 
   

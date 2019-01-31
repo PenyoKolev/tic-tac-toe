@@ -24,22 +24,22 @@ public class PlayGameTest {
    * Not a good test because the result from the game is unpredictable and is not asserted.
    *
    */
-  @Test(dataProvider = "arcadeMachineFakeIO")
-  public void playGameWhenFinishGameStateShouldBeSELECT_GAME(final ArcadeMachine machine) {
-    // Arrange
-    int coins = 10;
-    machine.putCoins(coins);
-    machine.selectGame(new TicTacToeGame(new ConsoleIO()));
-
-    // Act
-    machine.playGame(Order.PLAYER_ONE_FIRST, Marker.X);
-    while (!machine.getGame().isOver()) {
-      machine.getIo().readNextInt();
-    }
-
-    // Assert
-    assertEquals(machine.getStateName(), "SELECT_GAME");
-  }
+//  @Test(dataProvider = "arcadeMachineFakeIO")
+//  public void playGameWhenFinishGameStateShouldBeSELECT_GAME(final ArcadeMachine machine) {
+//    // Arrange
+//    int coins = 10;
+//    machine.putCoins(coins);
+//    machine.selectGame(new TicTacToeGame(new ConsoleIO(), Marker.X, Order.PLAYER_ONE_FIRST));
+//
+//    // Act
+//    machine.playGame();
+//    while (!machine.getGame().isOver()) {
+//      machine.getIo().readNextInt();
+//    }
+//
+//    // Assert
+//    assertEquals(machine.getStateName(), "SELECT_GAME");
+//  }
 
 //  @Test(dataProvider = "arcadeMachineFakeIO", expectedExceptions = IllegalStateException.class)
 //  public void methodUnsuportedForTheStateShouldDoNothing(ArcadeMachine machine) {

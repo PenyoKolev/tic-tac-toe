@@ -17,13 +17,7 @@ public class AITicTacToe implements AI {
 
   @Override
   public boolean move() {
-    final List<Integer> freeCells = new ArrayList<>();
-    for (int i = 0; i < board.getFreeCells().length; i++) {
-
-      if (board.getFreeCells()[i] == Marker.EMPTY) {
-        freeCells.add(i);
-      }
-    }
+    List<Integer> freeCells = getFreeCells();
     final Random rand = new Random();
     if (freeCells.size() < 1) {
       return true;
@@ -34,5 +28,16 @@ public class AITicTacToe implements AI {
     board.getGrid()[row][col] = marker;
     board.getFreeCells()[randomElement] = marker;
     return false;
+  }
+
+  @Override
+  public List<Integer> getFreeCells() {
+    final List<Integer> freeCells = new ArrayList<>();
+    for (int i = 0; i < board.getFreeCells().length; i++) {
+      if (board.getFreeCells()[i] == Marker.EMPTY) {
+        freeCells.add(i);
+      }
+    }
+    return freeCells;
   }
 }

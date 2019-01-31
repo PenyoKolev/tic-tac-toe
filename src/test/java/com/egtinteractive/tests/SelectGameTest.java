@@ -22,7 +22,7 @@ public class SelectGameTest {
     machine.putCoins(10);
     
     //Act
-    machine.selectGame(new TicTacToeGame(new ConsoleIO()));
+    machine.selectGame(new TicTacToeGame(new ConsoleIO(), Marker.X, Order.PLAYER_ONE_FIRST));
     
     //Assert
     assertEquals(machine.getStateName(), "PLAY_GAME");  
@@ -34,7 +34,7 @@ public class SelectGameTest {
     machine.putCoins(8);
     
     //Act
-    machine.selectGame(new TicTacToeGame(new ConsoleIO()));
+    machine.selectGame(new TicTacToeGame(new ConsoleIO(), Marker.X, Order.PLAYER_ONE_FIRST));
     
     //Assert
     assertEquals(machine.getStateName(), "SELECT_GAME");  
@@ -43,6 +43,6 @@ public class SelectGameTest {
   @Test(dataProvider = "arcadeMachineFakeIO", expectedExceptions = IllegalStateException.class)
   public void methodUnsuportedForTheStateShouldDoNothing(ArcadeMachine machine) {
     // Act
-    machine.playGame(Order.PLAYER_ONE_FIRST, Marker.X);
+    machine.playGame();
   }
 }
