@@ -19,14 +19,14 @@ public class App {
   public static void main(String[] args) {  
     InputOutput io = new ConsoleIO();
     Board board = new TicTacToeBoard(3);
+    Marker marker = Marker.X;
     Order order = Order.PLAYER_ONE_FIRST;
-    AI ai = new AITicTacToe();
-    
-    Opponent opponent = new AIPlayer(ai, Marker.O);
+    AI ai = new AITicTacToe(); 
+    Opponent opponent = new AIPlayer(ai);
 
     Machine machine = new ArcadeMachine(io);
     machine.putCoins(40);
-    machine.selectGame(new TicTacToeGame(io, board, Marker.X, order, opponent));
+    machine.selectGame(new TicTacToeGame(io, board, marker, order, opponent));
     machine.playGame();
     
   }

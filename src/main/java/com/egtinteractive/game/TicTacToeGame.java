@@ -93,7 +93,7 @@ public class TicTacToeGame implements Game {
   }
 
   private void playerTwoMove() {
-    if (opponent.move(board)) {
+    if (opponent.move(board, otherMarker(marker))) {
       resultHelper("Draw !!!", Result.DRAW);
     }
   }

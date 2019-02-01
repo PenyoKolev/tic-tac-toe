@@ -7,15 +7,13 @@ import com.egtinteractive.board.Marker;
 public class AIPlayer implements Opponent {
 
   final AI ai;
-  Marker marker;
 
-  public AIPlayer(AI ai, Marker marker) {
+  public AIPlayer(AI ai) {
     this.ai = ai;
-    this.marker = marker;
   }
 
   @Override
-  public boolean move(final Board board) {
+  public boolean move(final Board board, final Marker marker) {
     return ai.move(board, marker);
   }
 }
