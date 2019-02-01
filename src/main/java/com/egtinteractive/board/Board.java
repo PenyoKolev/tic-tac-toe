@@ -13,4 +13,5 @@ public interface Board {
   public Marker[][] getGrid();
 
   public Marker[] getFreeCells();
+  
 }

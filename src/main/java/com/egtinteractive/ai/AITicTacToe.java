@@ -7,17 +7,12 @@ import com.egtinteractive.board.Board;
 import com.egtinteractive.board.Marker;
 
 public class AITicTacToe implements AI {
-  public final Board board;
-  public final Marker marker;
 
-  public AITicTacToe(Board board, Marker marker) {
-    this.board = board;
-    this.marker = marker;
-  }
+  public AITicTacToe() {}
 
   @Override
-  public boolean move() {
-    List<Integer> freeCells = getFreeCells();
+  public boolean move(Board board, Marker marker) {
+    List<Integer> freeCells = getListOfFreeCells(board);
     final Random rand = new Random();
     if (freeCells.size() < 1) {
       return true;
@@ -30,8 +25,7 @@ public class AITicTacToe implements AI {
     return false;
   }
 
-  @Override
-  public List<Integer> getFreeCells() {
+  public List<Integer> getListOfFreeCells(Board board) {
     final List<Integer> freeCells = new ArrayList<>();
     for (int i = 0; i < board.getFreeCells().length; i++) {
       if (board.getFreeCells()[i] == Marker.EMPTY) {

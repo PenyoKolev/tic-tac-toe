@@ -16,29 +16,29 @@ public class SelectGameTest {
     return Provider.arcadeMachineFakeIO();
   }
   
-  @Test(dataProvider = "arcadeMachineFakeIO")
-  public void selectGameShouldChangeStateToPLAY_GAME(final ArcadeMachine machine) {
-    //Arrange
-    machine.putCoins(10);
-    
-    //Act
-    machine.selectGame(new TicTacToeGame(new ConsoleIO(), Marker.X, Order.PLAYER_ONE_FIRST));
-    
-    //Assert
-    assertEquals(machine.getStateName(), "PLAY_GAME");  
-  }
+//  @Test(dataProvider = "arcadeMachineFakeIO")
+//  public void selectGameShouldChangeStateToPLAY_GAME(final ArcadeMachine machine) {
+//    //Arrange
+//    machine.putCoins(10);
+//    
+//    //Act
+//    machine.selectGame(new TicTacToeGame(new ConsoleIO(), Marker.X, Order.PLAYER_ONE_FIRST));
+//    
+//    //Assert
+//    assertEquals(machine.getStateName(), "PLAY_GAME");  
+//  }
   
-  @Test(dataProvider = "arcadeMachineFakeIO")
-  public void selectGameShouldNotChangeStateIfCoinsNotEnough(final ArcadeMachine machine) {
-    //Arrange
-    machine.putCoins(8);
-    
-    //Act
-    machine.selectGame(new TicTacToeGame(new ConsoleIO(), Marker.X, Order.PLAYER_ONE_FIRST));
-    
-    //Assert
-    assertEquals(machine.getStateName(), "SELECT_GAME");  
-  }
+//  @Test(dataProvider = "arcadeMachineFakeIO")
+//  public void selectGameShouldNotChangeStateIfCoinsNotEnough(final ArcadeMachine machine) {
+//    //Arrange
+//    machine.putCoins(8);
+//    
+//    //Act
+//    machine.selectGame(new TicTacToeGame(new ConsoleIO(), Marker.X, Order.PLAYER_ONE_FIRST));
+//    
+//    //Assert
+//    assertEquals(machine.getStateName(), "SELECT_GAME");  
+//  }
   
   @Test(dataProvider = "arcadeMachineFakeIO", expectedExceptions = IllegalStateException.class)
   public void methodUnsuportedForTheStateShouldDoNothing(ArcadeMachine machine) {

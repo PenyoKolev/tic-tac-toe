@@ -1,8 +1,9 @@
 package com.egtinteractive.player;
 
+import com.egtinteractive.board.Board;
 import com.egtinteractive.board.Marker;
 
-public class HumanPlayer implements Player {
+public class HumanPlayer implements Opponent {
   Marker marker;
 
   public HumanPlayer(Marker marker) {
@@ -10,12 +11,8 @@ public class HumanPlayer implements Player {
   }
 
   @Override
-  public Marker getMarker() {
-    return marker;
-  }
-
-  @Override
-  public void setMarker(Marker marker) {
-    this.marker = marker;
+  public boolean move(Board board) {
+    // TODO Auto-generated method stub
+    return false;
   }
 }

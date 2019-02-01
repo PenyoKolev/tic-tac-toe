@@ -1,10 +1,9 @@
 package com.egtinteractive.ai;
 
-import java.util.List;
+import com.egtinteractive.board.Board;
+import com.egtinteractive.board.Marker;
 
 public interface AI {
 
-  public boolean move();
-  
-  public List<Integer> getFreeCells();
+  public boolean move(Board board, Marker marker);
 }

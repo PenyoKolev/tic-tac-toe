@@ -1,36 +1,29 @@
 package com.egtinteractive.game;
 
 import java.util.ArrayList;
-import com.egtinteractive.board.TicTacToeBoard;
 import com.egtinteractive.db.Queries;
 import com.egtinteractive.io.InputOutput;
-import com.egtinteractive.ai.AI;
-import com.egtinteractive.ai.AITicTacToe;
 import com.egtinteractive.board.Board;
 import com.egtinteractive.board.Marker;
-import com.egtinteractive.player.HumanPlayer;
+import com.egtinteractive.player.Opponent;
 
 public class TicTacToeGame implements Game {
 
-  private final HumanPlayer player;
-  private final Board board;
   private final InputOutput io;
-  private final int price;
+  private final Board board;
+  private final Marker marker;
   private final Order order;
+  private final Opponent opponent;
+  private final int price;
   private Result result;
-  private final AI ai;
 
-  public TicTacToeGame(InputOutput io, Marker marker, Order order) {
-    this.player = new HumanPlayer(marker);
-    this.board = new TicTacToeBoard();
+  public TicTacToeGame(InputOutput io, Board board, Marker marker, Order order, Opponent opponent) {
     this.io = io;
-    this.price = 10;
+    this.board = board;
+    this.marker = marker;
     this.order = order;
-    if (marker == Marker.X) { // TODO remove logic from here
-      this.ai = new AITicTacToe(board, Marker.O);
-    } else {
-      this.ai = new AITicTacToe(board, Marker.X);
-    }
+    this.opponent = opponent;
+    this.price = 10;
   }
 
   @Override
@@ -49,7 +42,7 @@ public class TicTacToeGame implements Game {
 
   private boolean orderFirstPlayer() {
     showGame();
-    if (ai.getFreeCells().size() < 1) {
+    if (board.getFreeCells().length < 1) {
       resultHelper("Draw !!!", Result.DRAW);
       return true;
     }
@@ -80,7 +73,7 @@ public class TicTacToeGame implements Game {
       resultHelper("Computer win !!!", Result.COMPUTER_WIN);
       return true;
     }
-    if (ai.getFreeCells().size() < 1) {
+    if (board.getFreeCells().length < 1) {
       resultHelper("Draw !!!", Result.DRAW);
       return true;
     }
@@ -107,7 +100,7 @@ public class TicTacToeGame implements Game {
       io.write("Choose a number between 0 and 8");
       return false;
     }
-    if (getBoard().isFree(position) == false) {
+    if (board.isFree(position) == false) {
       getIo().write("Position already in use!");
       return false;
     }
@@ -118,12 +111,12 @@ public class TicTacToeGame implements Game {
     final int row = position / 3;
     final int col = position % 3;
 
-    getBoard().getGrid()[row][col] = player.getMarker();
-    getBoard().getFreeCells()[position] = player.getMarker();
+    board.getGrid()[row][col] = marker;
+    board.getFreeCells()[position] = marker;
   }
 
   private void playerTwoMove() {
-    if (ai.move()) {
+    if (opponent.move(board)) {             
       resultHelper("Draw !!!", Result.DRAW);
     }
   }
@@ -160,7 +153,7 @@ public class TicTacToeGame implements Game {
   }
 
   private void showGame() {
-    getBoard().showBoard(io);
+    board.showBoard(io);
   }
 
   @Override
@@ -174,10 +167,6 @@ public class TicTacToeGame implements Game {
 
   private void setResult(final Result result) {
     this.result = result;
-  }
-
-  public Board getBoard() {
-    return board;
   }
 
   public InputOutput getIo() {
