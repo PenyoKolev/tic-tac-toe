@@ -2,8 +2,6 @@ package com.egtinteractive.tests;
 
 import static org.testng.Assert.assertEquals;
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import com.egtinteractive.io.ConsoleIO;

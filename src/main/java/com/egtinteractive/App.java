@@ -12,6 +12,7 @@ import com.egtinteractive.io.InputOutput;
 import com.egtinteractive.machine.ArcadeMachine;
 import com.egtinteractive.machine.Machine;
 import com.egtinteractive.player.AIPlayer;
+import com.egtinteractive.player.HumanPlayer;
 import com.egtinteractive.player.Opponent;
 
 public class App {
@@ -22,11 +23,12 @@ public class App {
     Marker marker = Marker.X;
     Order order = Order.PLAYER_ONE_FIRST;
     AI ai = new AITicTacToe(); 
-    Opponent opponent = new AIPlayer(ai);
+    Opponent human = new HumanPlayer(io);
+    Opponent computer = new AIPlayer(ai);
 
     Machine machine = new ArcadeMachine(io);
     machine.putCoins(40);
-    machine.selectGame(new TicTacToeGame(io, board, marker, order, opponent));
+    machine.selectGame(new TicTacToeGame(io, board, marker, order, computer));
     machine.playGame();
     
   }

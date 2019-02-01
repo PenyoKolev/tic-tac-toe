@@ -21,7 +21,8 @@ public class FakeInputIO implements InputOutput {
   @Override
   public void close() throws Exception {
     scanner.close();
-  }
+    throw new java.lang.UnsupportedOperationException("Not supported yet.");
+    }
 
   @Override
   public void write(String string) {
@@ -33,14 +34,15 @@ public class FakeInputIO implements InputOutput {
     return "";
   }
 
+  int playerOneMove = 0;
+  
   @Override
   public int readNextInt() {
-    return ThreadLocalRandom.current().nextInt(0, 9);
+    return playerOneMove++;
   }
 
   @Override
   public void writeSameLine(String string) {
-    // TODO Auto-generated method stub
-    
+    System.out.print(string);
   }
 }

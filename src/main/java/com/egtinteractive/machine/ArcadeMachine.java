@@ -42,7 +42,7 @@ public class ArcadeMachine implements Machine {
     this.state = state;
   }
 
-  int getBalance() {
+  public int getBalance() {
     return balance;
   }
 

@@ -44,38 +44,6 @@ public class TicTacToeGame implements Game {
     return PRICE;
   }
 
-  private boolean orderFirstPlayer() {
-    showGame();
-    if (isDraw()) {
-      return true;
-    }
-    playerOneMove();
-    if (hasWinner(marker)) {
-      return true;
-    }
-    playerTwoMove();
-    if (hasWinner(otherMarker(marker))) {
-      return true;
-    }
-    return false;
-  }
-
-  private boolean orderSecondPlayer() {
-    playerTwoMove();
-    showGame();
-    if (hasWinner(otherMarker(marker))) {
-      return true;
-    }
-    if (isDraw()) {
-      return true;
-    }
-    playerOneMove();
-    if (hasWinner(marker)) {
-      return true;
-    }
-    return false;
-  }
-
   private void playerOneMove() {
     io.write("Your next move is: ");
     while (true) {
@@ -96,6 +64,40 @@ public class TicTacToeGame implements Game {
     if (opponent.move(board, otherMarker(marker))) {
       resultHelper("Draw !!!", Result.DRAW);
     }
+  }
+
+  private boolean orderFirstPlayer() {
+    showGame();
+    if (isDraw()) {
+      return true;
+    }
+    playerOneMove();
+    if (hasWinner(marker)) {
+      return true;
+    }
+    showGame();
+    playerTwoMove();
+    if (hasWinner(otherMarker(marker))) {
+      return true;
+    }
+    return false;
+  }
+
+  private boolean orderSecondPlayer() {
+    playerTwoMove();
+    showGame();
+    if (hasWinner(otherMarker(marker))) {
+      return true;
+    }
+    if (isDraw()) {
+      return true;
+    }
+    playerOneMove();
+    showGame();
+    if (hasWinner(marker)) {
+      return true;
+    }
+    return false;
   }
 
   private void writeGameToDb() {

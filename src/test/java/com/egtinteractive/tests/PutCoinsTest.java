@@ -1,53 +1,47 @@
 package com.egtinteractive.tests;
 
-import org.testng.annotations.Test;
-import com.egtinteractive.board.Marker;
-import com.egtinteractive.game.Order;
 import com.egtinteractive.machine.ArcadeMachine;
 import com.egtinteractive.provider.Provider;
 import static org.testng.Assert.assertEquals;
 import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
 
 public class PutCoinsTest {
 
-  @DataProvider(name = "arcadeMachineFakeIO")
+  @DataProvider(name = "arcadeMachineConsoleIO")
   public Object[][] getMachine() {
-    return Provider.arcadeMachineFakeIO();
+    return Provider.arcadeMachineConsoleIO();
   }
-  
-  @Test(dataProvider = "arcadeMachineFakeIO")
+
+  @Test(dataProvider = "arcadeMachineConsoleIO")
   public void putCoinsShouldAddCoinsToBalance(final ArcadeMachine machine) {
-    //Arrange
+    // Arrange
     final int oldBalance = machine.getBalance();
-    
-    //Act
+
+    // Act
     final int coins = 10;
     machine.putCoins(coins);
-    
-    //Assert
+
+    // Assert
     assertEquals(machine.getBalance(), oldBalance + coins);
-    
   }
-  
-  @Test(dataProvider = "arcadeMachineFakeIO")
+
+  @Test(dataProvider = "arcadeMachineConsoleIO")
   public void putCoinsShouldNotAcceptNegativeCoins(final ArcadeMachine machine) {
-    //Arrange
+    // Arrange
     final int oldBalance = machine.getBalance();
-    
-    //Act
+
+    // Act
     final int coins = -10;
     machine.putCoins(coins);
-    
-    //Assert
+
+    // Assert
     assertEquals(machine.getBalance(), oldBalance);
-    
   }
-  
-  @Test(dataProvider = "arcadeMachineFakeIO", expectedExceptions = IllegalStateException.class)
+
+  @Test(dataProvider = "arcadeMachineConsoleIO", expectedExceptions = IllegalStateException.class)
   public void methodUnsuportedForTheStateShouldDoNothing(ArcadeMachine machine) {
     // Act
     machine.playGame();
   }
-
-  
 }
