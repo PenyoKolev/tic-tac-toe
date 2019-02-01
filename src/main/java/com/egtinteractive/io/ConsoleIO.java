@@ -15,12 +15,12 @@ public class ConsoleIO implements InputOutput {
   }
 
   @Override
-  public void write(String string) {
+  public void write(final String string) {
     System.out.println(string);
   }
 
   @Override
-  public void writeSameLine(String string) {
+  public void writeSameLine(final String string) {
     System.out.print(string);
   }
 

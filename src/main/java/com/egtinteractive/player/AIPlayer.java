@@ -15,7 +15,7 @@ public class AIPlayer implements Opponent {
   }
 
   @Override
-  public boolean move(Board board) {
+  public boolean move(final Board board) {
     return ai.move(board, marker);
   }
 }

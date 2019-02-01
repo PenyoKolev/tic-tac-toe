@@ -5,5 +5,5 @@ import com.egtinteractive.board.Marker;
 
 public interface AI {
 
-  public boolean move(Board board, Marker marker);
+  public boolean move(final Board board, final Marker marker);
 }

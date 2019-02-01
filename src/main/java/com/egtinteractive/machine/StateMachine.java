@@ -46,15 +46,15 @@ public enum StateMachine {
     }
   };
 
-  public void putCoins(final ArcadeMachine machine, final int coins) {
+  void putCoins(final ArcadeMachine machine, final int coins) {
     throw new IllegalStateException("Coins are not accepted in current state!");
   }
 
-  public void selectGame(final ArcadeMachine machine, final Game game) {
+  void selectGame(final ArcadeMachine machine, final Game game) {
     throw new IllegalStateException("Cannot select game in current state!");
   }
 
-  public void playGame(final ArcadeMachine machine) {
+  void playGame(final ArcadeMachine machine) {
     throw new IllegalStateException("Cannot play in current state!");
   }
 }

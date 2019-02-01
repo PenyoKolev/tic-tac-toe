@@ -6,15 +6,8 @@ import com.egtinteractive.io.InputOutput;
 public class ArcadeMachine implements Machine {
   private StateMachine state;
   private int balance;
-
-  /*
-   * [WARNING] author ivailozd
-   *
-   * Why are these not final fields?
-   *
-   */       
   private final InputOutput io;
-  private Game game;        //TODO check if this should be final after all
+  private Game game;
 
   public ArcadeMachine(final InputOutput io) {
     this.io = io;
@@ -36,7 +29,7 @@ public class ArcadeMachine implements Machine {
   public void playGame() {
     this.state.playGame(this);
   }
-  
+
   public String getStateName() {
     return state.name();
   }
@@ -49,7 +42,7 @@ public class ArcadeMachine implements Machine {
     this.state = state;
   }
 
-  public int getBalance() {
+  int getBalance() {
     return balance;
   }
 

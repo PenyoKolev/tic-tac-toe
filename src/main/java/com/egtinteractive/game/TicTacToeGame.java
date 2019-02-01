@@ -27,10 +27,10 @@ public class TicTacToeGame implements Game {
 
   @Override
   public boolean startGame() {
-    if (order == Order.PLAYER_ONE_FIRST) {
+    if (order.equals(Order.PLAYER_ONE_FIRST)) {
       while (!orderFirstPlayer()) ;
     }
-    if (order == Order.PLAYER_TWO_FIRST) {
+    if (order.equals(Order.PLAYER_TWO_FIRST)) {
       while (!orderSecondPlayer()) ;
     }
     writeGameToDb();
@@ -46,25 +46,15 @@ public class TicTacToeGame implements Game {
 
   private boolean orderFirstPlayer() {
     showGame();
-    if (board.getCells().length < 1) {
-      resultHelper("Draw !!!", Result.DRAW);
+    if (isDraw()) {
       return true;
     }
-    io.write("Your next move is: ");
-
-    int position = io.readNextInt();
-
-    if (!isValidPosition(position)) {
-      return false;
-    }
-    playerOneMove(position);
-    if (board.hasWinner(marker)) {
-      resultHelper("Player win !!!", Result.PLAYER_WIN);
+    playerOneMove();
+    if (hasWinner(marker)) {
       return true;
     }
     playerTwoMove();
-    if (board.hasWinner(otherMarker(marker))) {
-      resultHelper("Computer win !!!", Result.COMPUTER_WIN);
+    if (hasWinner(otherMarker(marker))) {
       return true;
     }
     return false;
@@ -73,50 +63,33 @@ public class TicTacToeGame implements Game {
   private boolean orderSecondPlayer() {
     playerTwoMove();
     showGame();
-    if (board.hasWinner(otherMarker(marker))) {
-      resultHelper("Computer win !!!", Result.COMPUTER_WIN);
+    if (hasWinner(otherMarker(marker))) {
       return true;
     }
-    if (board.getCells().length < 1) {
-      resultHelper("Draw !!!", Result.DRAW);
+    if (isDraw()) {
       return true;
     }
-
-    io.write("Your next move is: ");
-    while (true) {
-      int position = io.readNextInt();
-      if (!isValidPosition(position)) {
-        continue;
-      } else {
-        playerOneMove(position);
-        break;
-      }
-    }
-    if (board.hasWinner(marker)) {
-      resultHelper("Player win !!!", Result.PLAYER_WIN);
+    playerOneMove();
+    if (hasWinner(marker)) {
       return true;
     }
     return false;
   }
 
-  private boolean isValidPosition(int position) {
-    if (position < 0 || position > board.getCells().length - 1) {
-      io.write("Choose a number between 0 and " + (board.getCells().length - 1));
-      return false;
+  private void playerOneMove() {
+    io.write("Your next move is: ");
+    while (true) {
+      final int position = io.readNextInt();
+      if (!isValidPosition(position)) {
+        continue;
+      } else {
+        final int row = position / board.getGrid().length;
+        final int col = position % board.getGrid().length;
+        board.getGrid()[row][col] = marker;
+        board.getCells()[position] = marker;
+        break;
+      }
     }
-    if (board.isFree(position) == false) {
-      getIo().write("Position already in use!");
-      return false;
-    }
-    return true;
-  }
-
-  private void playerOneMove(final int position) {
-    final int row = position / board.getGrid().length;
-    final int col = position % board.getGrid().length;
-
-    board.getGrid()[row][col] = marker;
-    board.getCells()[position] = marker;
   }
 
   private void playerTwoMove() {
@@ -127,11 +100,11 @@ public class TicTacToeGame implements Game {
 
   private void writeGameToDb() {
     final Queries query = new Queries();
-    if (getResult() == Result.PLAYER_WIN) {
+    if (getResult().equals(Result.PLAYER_WIN)) {
       io.write("Please, enter your name:");
       io.read();
       final String name = io.read();
-      int id = query.getId(name);
+      final int id = query.getId(name);
       if (id != 0) {
         query.addWinGameKnownPlayer(id);
       } else if (name.length() != 0) {
@@ -151,16 +124,48 @@ public class TicTacToeGame implements Game {
     }
   }
 
-  private void resultHelper(String string, Result result) {
+  private void resultHelper(final String string, final Result result) {
     getIo().write(string);
     setResult(result);
+  }
+
+  private boolean hasWinner(final Marker marker) {
+    if (board.hasWinner(marker)) {
+      if (marker == this.marker) {
+        resultHelper("Player win !!!", Result.PLAYER_WIN);
+      } else {
+        resultHelper("Computer win !!!", Result.COMPUTER_WIN);
+      }
+      return true;
+    }
+    return false;
+  }
+
+  private boolean isDraw() {
+    if (board.getCells().length < 1) {
+      resultHelper("Draw !!!", Result.DRAW);
+      return true;
+    }
+    return false;
+  }
+
+  private boolean isValidPosition(final int position) {
+    if (position < 0 || position > board.getCells().length - 1) {
+      io.write("Choose a number between 0 and " + (board.getCells().length - 1));
+      return false;
+    }
+    if (board.isFree(position) == false) {
+      getIo().write("Position already in use!");
+      return false;
+    }
+    return true;
   }
 
   private void showGame() {
     board.showBoard(io);
   }
-  
-  private Marker otherMarker(Marker marker) {
+
+  private Marker otherMarker(final Marker marker) {
     if (marker.equals(Marker.X)) {
       return Marker.O;
     } else {

@@ -4,5 +4,5 @@ import com.egtinteractive.board.Board;
 
 public interface Opponent {
 
-  public boolean move(Board board);
+  public boolean move(final Board board);
 }

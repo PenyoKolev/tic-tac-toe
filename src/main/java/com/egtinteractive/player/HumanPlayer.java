@@ -11,7 +11,7 @@ public class HumanPlayer implements Opponent {
   }
 
   @Override
-  public boolean move(Board board) {
+  public boolean move(final Board board) {
     // TODO Auto-generated method stub
     return false;
   }

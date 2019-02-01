@@ -9,7 +9,7 @@ import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 public class DBFactory {
 
   public static DataSource getDataSource() {
-    Properties p = new Properties();
+    final Properties p = new Properties();
     FileInputStream fis = null;
     MysqlDataSource mysqlDS = null;
     try {

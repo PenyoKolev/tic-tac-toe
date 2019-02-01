@@ -8,7 +8,7 @@ public interface Board {
 
   public boolean isFree(final int position);
   
-  public boolean hasWinner(Marker marker);
+  public boolean hasWinner(final Marker marker);
 
   public Marker[][] getGrid();
 

@@ -12,7 +12,7 @@ import javax.sql.DataSource;
 public class Queries {
 
   public void addWinGameKnownPlayer(final int id) {
-    DataSource ds = DBFactory.getDataSource();
+    final DataSource ds = DBFactory.getDataSource();
     Connection con = null;
     PreparedStatement stmt = null;
     PreparedStatement stmt1 = null;
@@ -41,7 +41,7 @@ public class Queries {
   }
 
   public void addWinGameUnknownPlayer(final String name) {
-    DataSource ds = DBFactory.getDataSource();
+    final DataSource ds = DBFactory.getDataSource();
     Connection con = null;
     PreparedStatement stmt = null;
     PreparedStatement stmt1 = null;
@@ -70,7 +70,7 @@ public class Queries {
   }
 
   public void addLoseGame() {
-    DataSource ds = DBFactory.getDataSource();
+    final DataSource ds = DBFactory.getDataSource();
     Connection con = null;
     PreparedStatement stmt = null;
     try {
@@ -92,7 +92,7 @@ public class Queries {
   }
 
   public int getId(final String name) {
-    DataSource ds = DBFactory.getDataSource();
+    final DataSource ds = DBFactory.getDataSource();
     Connection con = null;
     PreparedStatement stmt = null;
     ResultSet rs = null;
@@ -121,7 +121,7 @@ public class Queries {
 
   public ArrayList<String> topThree() {
     final ArrayList<String> result = new ArrayList<>();
-    DataSource ds = DBFactory.getDataSource();
+    final DataSource ds = DBFactory.getDataSource();
     Connection con = null;
     PreparedStatement stmt = null;
     ResultSet rs = null;

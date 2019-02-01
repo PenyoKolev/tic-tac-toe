@@ -48,11 +48,11 @@ public class TicTacToeBoard implements Board {
   }
 
   @Override
-  public boolean hasWinner(Marker marker) {
+  public boolean hasWinner(final Marker marker) {
     return checkRows(marker) || checkColumns(marker) || checkDiagonals(marker);
   }
 
-  public boolean checkRows(Marker marker) {
+  public boolean checkRows(final Marker marker) {
     int count = 0;
     for (int i = 0; i < size; i++) {
       for (int j = 0; j < size; j++) {
@@ -64,7 +64,7 @@ public class TicTacToeBoard implements Board {
     return false;
   }
 
-  private boolean checkColumns(Marker marker) {
+  private boolean checkColumns(final Marker marker) {
     int count = 0;
     for (int i = 0; i < size; i++) {
       for (int j = 0; j < size; j++) {
@@ -76,7 +76,7 @@ public class TicTacToeBoard implements Board {
     return false;
   }
 
-  private boolean checkDiagonals(Marker marker) {
+  private boolean checkDiagonals(final Marker marker) {
     final Marker[][] grid = getGrid();
     boolean leftDiagonal = true;
     boolean rightDiagonal = true;
@@ -91,7 +91,7 @@ public class TicTacToeBoard implements Board {
     return (leftDiagonal || rightDiagonal);
   }
 
-  private void populateArrays(int size) {
+  private void populateArrays(final int size) {
     cells = new Marker[size * size];
     grid = new Marker[size][size];
     Arrays.fill(cells, Marker.EMPTY);
