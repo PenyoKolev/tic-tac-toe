@@ -1,29 +1,20 @@
 package com.egtinteractive.board;
 
+import java.util.Arrays;
 import com.egtinteractive.io.InputOutput;
 
 public class TicTacToeBoard implements Board {
-  private final Marker[][] grid = {
-    {Marker.EMPTY, Marker.EMPTY, Marker.EMPTY},
-    {Marker.EMPTY, Marker.EMPTY, Marker.EMPTY},
-    {Marker.EMPTY, Marker.EMPTY, Marker.EMPTY}
-  };
+  private static final int SIZE = 3;
+  private final Marker[][] grid = new Marker[SIZE][SIZE];
+  private final Marker[] freeCells = new Marker[SIZE * SIZE];
 
-  private final Marker[] freeCells = {
-    Marker.EMPTY,
-    Marker.EMPTY,
-    Marker.EMPTY,
-    Marker.EMPTY,
-    Marker.EMPTY,
-    Marker.EMPTY,
-    Marker.EMPTY,
-    Marker.EMPTY,
-    Marker.EMPTY
-  };
+  public TicTacToeBoard() {
+    populateArrays();
+  }
 
   @Override
   public void showBoard(final InputOutput io) {
-    for (int i = 0; i < grid.length; i++) {
+    for (int i = 0; i < SIZE; i++) {
       final StringBuilder sb = new StringBuilder();
       sb.append(" ")
           .append(grid[i][0])
@@ -32,7 +23,7 @@ public class TicTacToeBoard implements Board {
           .append(" | ")
           .append(grid[i][2]);
       io.write(sb.toString());
-      if (i < grid.length - 1) {
+      if (i < SIZE - 1) {
         io.write("-----------");
       }
     }
@@ -40,7 +31,7 @@ public class TicTacToeBoard implements Board {
 
   @Override
   public boolean isFree(final int position) {
-    return freeCells[position] == Marker.EMPTY;
+    return freeCells[position].equals(Marker.EMPTY);
   }
 
   @Override
@@ -59,7 +50,7 @@ public class TicTacToeBoard implements Board {
   }
 
   public boolean checkRows() {
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i < SIZE; i++) {
       final Marker[] row = this.getGrid()[i];
       if (row[0] == row[1] && row[1] == row[2] && row[2] != Marker.EMPTY) {
         return true;
@@ -68,8 +59,15 @@ public class TicTacToeBoard implements Board {
     return false;
   }
 
-  public boolean checkColumns() {
-    for (int i = 0; i < 3; i++) {
+  private void populateArrays() {
+    Arrays.fill(freeCells, Marker.EMPTY);
+    for (Marker[] row : grid) {
+      Arrays.fill(row, Marker.EMPTY);
+    }
+  }
+
+  private boolean checkColumns() {
+    for (int i = 0; i < SIZE; i++) {
       if (getGrid()[0][i] == getGrid()[1][i]
           && getGrid()[1][i] == getGrid()[2][i]
           && getGrid()[2][i] != Marker.EMPTY) {
@@ -79,7 +77,7 @@ public class TicTacToeBoard implements Board {
     return false;
   }
 
-  public boolean checkDiagonals() {
+  private boolean checkDiagonals() {
     final Marker[][] grid = getGrid();
     if (grid[0][0] == grid[1][1] && grid[1][1] == grid[2][2] && grid[2][2] != Marker.EMPTY) {
       return true;
