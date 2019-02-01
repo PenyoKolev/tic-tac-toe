@@ -18,7 +18,7 @@ public class App {
 
   public static void main(String[] args) {  
     InputOutput io = new ConsoleIO();
-    Board board = new TicTacToeBoard();
+    Board board = new TicTacToeBoard(3);
     Order order = Order.PLAYER_ONE_FIRST;
     AI ai = new AITicTacToe();
     

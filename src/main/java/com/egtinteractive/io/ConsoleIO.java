@@ -10,18 +10,23 @@ public class ConsoleIO implements InputOutput {
   }
 
   @Override
-  public void write(final String string) {
+  public void close() throws Exception {
+    scanner.close();
+  }
+
+  @Override
+  public void write(String string) {
     System.out.println(string);
+  }
+
+  @Override
+  public void writeSameLine(String string) {
+    System.out.print(string);
   }
 
   @Override
   public String read() {
     return scanner.nextLine();
-  }
-
-  @Override
-  public void close() {
-    scanner.close();
   }
 
   @Override

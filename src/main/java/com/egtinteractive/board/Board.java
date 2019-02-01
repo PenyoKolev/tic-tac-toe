@@ -8,10 +8,10 @@ public interface Board {
 
   public boolean isFree(final int position);
   
-  public boolean hasWinner();
+  public boolean hasWinner(Marker marker);
 
   public Marker[][] getGrid();
 
-  public Marker[] getFreeCells();
+  public Marker[] getCells();
   
 }

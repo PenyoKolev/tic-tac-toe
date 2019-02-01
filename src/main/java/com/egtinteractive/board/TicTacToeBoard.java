@@ -4,34 +4,37 @@ import java.util.Arrays;
 import com.egtinteractive.io.InputOutput;
 
 public class TicTacToeBoard implements Board {
-  private static final int SIZE = 3;
-  private final Marker[][] grid = new Marker[SIZE][SIZE];
-  private final Marker[] freeCells = new Marker[SIZE * SIZE];
+  private Marker[][] grid;
+  private Marker[] cells;
+  private final int size;
 
-  public TicTacToeBoard() {
-    populateArrays();
+  public TicTacToeBoard(int size) {
+    this.size = size;
+    populateArrays(size);
   }
 
   @Override
   public void showBoard(final InputOutput io) {
-    for (int i = 0; i < SIZE; i++) {
+    for (int i = 0; i < size; i++) {
       final StringBuilder sb = new StringBuilder();
-      sb.append(" ")
-          .append(grid[i][0])
-          .append(" | ")
-          .append(grid[i][1])
-          .append(" | ")
-          .append(grid[i][2]);
+      sb.append(" ");
+      for (int j = 0; j < size - 1; j++) {
+        sb.append(grid[i][j]).append(" | ");
+      }
+      sb.append(grid[i][size - 1]);
       io.write(sb.toString());
-      if (i < SIZE - 1) {
-        io.write("-----------");
+      if (i < size - 1) {
+        for (int j = 0; j < size; j++) {
+          io.writeSameLine("----");
+        }
+        io.write("");
       }
     }
   }
 
   @Override
   public boolean isFree(final int position) {
-    return freeCells[position].equals(Marker.EMPTY);
+    return cells[position].equals(Marker.EMPTY);
   }
 
   @Override
@@ -40,51 +43,60 @@ public class TicTacToeBoard implements Board {
   }
 
   @Override
-  public Marker[] getFreeCells() {
-    return freeCells;
+  public Marker[] getCells() {
+    return cells;
   }
 
   @Override
-  public boolean hasWinner() {
-    return checkRows() || checkColumns() || checkDiagonals();
+  public boolean hasWinner(Marker marker) {
+    return checkRows(marker) || checkColumns(marker) || checkDiagonals(marker);
   }
 
-  public boolean checkRows() {
-    for (int i = 0; i < SIZE; i++) {
-      final Marker[] row = this.getGrid()[i];
-      if (row[0] == row[1] && row[1] == row[2] && row[2] != Marker.EMPTY) {
-        return true;
+  public boolean checkRows(Marker marker) {
+    int count = 0;
+    for (int i = 0; i < size; i++) {
+      for (int j = 0; j < size; j++) {
+        if (grid[i][j].equals(marker)) count++;
       }
+      if (count == size) return true;
+      count = 0;
     }
     return false;
   }
 
-  private void populateArrays() {
-    Arrays.fill(freeCells, Marker.EMPTY);
+  private boolean checkColumns(Marker marker) {
+    int count = 0;
+    for (int i = 0; i < size; i++) {
+      for (int j = 0; j < size; j++) {
+        if (grid[j][i].equals(marker)) count++;
+      }
+      if (count == size) return true;
+      count = 0;
+    }
+    return false;
+  }
+
+  private boolean checkDiagonals(Marker marker) {
+    final Marker[][] grid = getGrid();
+    boolean leftDiagonal = true;
+    boolean rightDiagonal = true;
+    for (int i = 0; i < grid.length; i++) {
+      leftDiagonal = true;
+      rightDiagonal = true;
+      int row = size - 1 - i;
+      if (!grid[i][i].equals(marker)) leftDiagonal = false;
+      if (!grid[row][i].equals(marker)) rightDiagonal = false;
+      if (!(leftDiagonal || rightDiagonal)) break;
+    }
+    return (leftDiagonal || rightDiagonal);
+  }
+
+  private void populateArrays(int size) {
+    cells = new Marker[size * size];
+    grid = new Marker[size][size];
+    Arrays.fill(cells, Marker.EMPTY);
     for (Marker[] row : grid) {
       Arrays.fill(row, Marker.EMPTY);
     }
-  }
-
-  private boolean checkColumns() {
-    for (int i = 0; i < SIZE; i++) {
-      if (getGrid()[0][i] == getGrid()[1][i]
-          && getGrid()[1][i] == getGrid()[2][i]
-          && getGrid()[2][i] != Marker.EMPTY) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  private boolean checkDiagonals() {
-    final Marker[][] grid = getGrid();
-    if (grid[0][0] == grid[1][1] && grid[1][1] == grid[2][2] && grid[2][2] != Marker.EMPTY) {
-      return true;
-    }
-    if (grid[0][2] == grid[1][1] && grid[1][1] == grid[2][0] && grid[2][0] != Marker.EMPTY) {
-      return true;
-    }
-    return false;
   }
 }

@@ -37,4 +37,10 @@ public class FakeInputIO implements InputOutput {
   public int readNextInt() {
     return ThreadLocalRandom.current().nextInt(0, 9);
   }
+
+  @Override
+  public void writeSameLine(String string) {
+    // TODO Auto-generated method stub
+    
+  }
 }

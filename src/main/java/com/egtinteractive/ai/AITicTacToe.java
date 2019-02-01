@@ -12,23 +12,23 @@ public class AITicTacToe implements AI {
 
   @Override
   public boolean move(Board board, Marker marker) {
-    List<Integer> freeCells = getListOfFreeCells(board);
+    List<Integer> freeCells = getFreeCells(board);
     final Random rand = new Random();
     if (freeCells.size() < 1) {
       return true;
     }
     final int randomElement = freeCells.get(rand.nextInt(freeCells.size()));
-    final int row = randomElement / 3;
-    final int col = randomElement % 3;
+    final int row = randomElement / board.getGrid().length;
+    final int col = randomElement % board.getGrid().length;
     board.getGrid()[row][col] = marker;
-    board.getFreeCells()[randomElement] = marker;
+    board.getCells()[randomElement] = marker;
     return false;
   }
 
-  public List<Integer> getListOfFreeCells(Board board) {
+  public List<Integer> getFreeCells(Board board) {
     final List<Integer> freeCells = new ArrayList<>();
-    for (int i = 0; i < board.getFreeCells().length; i++) {
-      if (board.getFreeCells()[i] == Marker.EMPTY) {
+    for (int i = 0; i < board.getCells().length; i++) {
+      if (board.getCells()[i] == Marker.EMPTY) {
         freeCells.add(i);
       }
     }
