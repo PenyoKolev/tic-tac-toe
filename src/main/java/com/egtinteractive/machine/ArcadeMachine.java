@@ -1,16 +1,13 @@
 package com.egtinteractive.machine;
 
 import com.egtinteractive.game.Game;
-import com.egtinteractive.io.InputOutput;
 
 public class ArcadeMachine implements Machine {
   private StateMachine state;
   private int balance;
-  private final InputOutput io;
   private Game game;
 
-  public ArcadeMachine(final InputOutput io) {
-    this.io = io;
+  public ArcadeMachine() {
     this.setState(StateMachine.SELECT_GAME);
     this.setBalance(0);
   }
@@ -56,9 +53,5 @@ public class ArcadeMachine implements Machine {
 
   void setGame(final Game game) {
     this.game = game;
-  }
-
-  public InputOutput getIo() {
-    return io;
   }
 }

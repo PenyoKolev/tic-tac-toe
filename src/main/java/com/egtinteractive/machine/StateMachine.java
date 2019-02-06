@@ -8,7 +8,7 @@ public enum StateMachine {
     @Override
     public void putCoins(final ArcadeMachine machine, final int coins) {
       if (coins < 0) {
-        machine.getIo().write("Negative coins are not accepted!");
+        System.out.println("Negative coins are not accepted!");
         machine.setState(SELECT_GAME);
         return;
       }
@@ -18,9 +18,7 @@ public enum StateMachine {
     @Override
     public void selectGame(final ArcadeMachine machine, final Game game) {
       if (machine.getBalance() < game.getPrice()) {
-        machine
-            .getIo()
-            .write(
+        System.out.println(
                 "The price of "
                     + game
                     + "is "

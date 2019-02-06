@@ -1,35 +1,36 @@
 package com.egtinteractive.player;
 
+import java.util.Scanner;
 import com.egtinteractive.board.Board;
 import com.egtinteractive.board.Marker;
-import com.egtinteractive.io.InputOutput;
 
 public class HumanPlayer implements Opponent {
-  private final InputOutput io;
+  Scanner scanner = new Scanner(System.in);
+  private final Marker marker;
 
-  public HumanPlayer(InputOutput io) {
-    this.io = io;
+  public HumanPlayer(Marker marker) {
+    this.marker = marker;
   }
 
   @Override
-  public boolean move(final Board board, final Marker marker) {
-    io.write("Player two next move is: ");
+  public int getNextMove(final Board board) {
+    System.out.println("Your next move: ");
     while (true) {
-      final int position = io.readNextInt();
+      final int position = scanner.nextInt();
       if (position < 0 || position > board.getCells().length - 1) {
-        io.write("Choose a number between 0 and " + (board.getCells().length - 1));
+        System.out.println("Choose a number between 0 and " + (board.getCells().length - 1));
         continue;
       } else if (board.isFree(position) == false) {
-        io.write("Position already in use!");
+        System.out.println("Position already in use!");
         continue;
       } else {
-        final int row = position / board.getGrid().length;
-        final int col = position % board.getGrid().length;
-        board.getGrid()[row][col] = marker;
-        board.getCells()[position] = marker;
-        break;
+        return position;
       }
     }
-    return false;
+  }
+
+  @Override
+  public Marker getMarker() {
+    return marker;
   }
 }

@@ -5,5 +5,7 @@ import com.egtinteractive.board.Marker;
 
 public interface Opponent {
 
-  public boolean move(final Board board, final Marker marker);
+  public int getNextMove(final Board board);
+
+  public Marker getMarker();
 }

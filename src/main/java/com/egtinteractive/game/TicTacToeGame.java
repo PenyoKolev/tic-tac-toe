@@ -1,40 +1,62 @@
 package com.egtinteractive.game;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 import com.egtinteractive.db.Queries;
-import com.egtinteractive.io.InputOutput;
 import com.egtinteractive.board.Board;
 import com.egtinteractive.board.Marker;
+import com.egtinteractive.player.HumanPlayer;
 import com.egtinteractive.player.Opponent;
 
 public class TicTacToeGame implements Game {
 
+  private Scanner scanner = new Scanner(System.in);
   private static final int PRICE = 10;
-  private final InputOutput io;
   private final Board board;
-  private final Marker marker;
-  private final Order order;
-  private final Opponent opponent;
-  private Result result;
+  private final List<Opponent> opponents;
+  private String winnerName;
 
-  public TicTacToeGame(InputOutput io, Board board, Marker marker, Order order, Opponent opponent) {
-    this.io = io;
+  public TicTacToeGame(Board board, List<Opponent> opponents) {
     this.board = board;
-    this.marker = marker;
-    this.order = order;
-    this.opponent = opponent;
+    this.opponents = opponents;
   }
 
   @Override
   public boolean startGame() {
-    if (order.equals(Order.PLAYER_ONE_FIRST)) {
-      while (!orderFirstPlayer()) ;
+    int maxMoves = board.getCells().length;
+    boolean noMoreMoves = false;
+    for (int i = 0; i < maxMoves; ) {
+      if (noMoreMoves) {
+        break;
+      }
+      for (Opponent opponent : opponents) {
+        i++;
+        if (i != maxMoves + 1) {
+          final int index = opponent.getNextMove(board);
+          board.makeMove(index, opponent.getMarker());
+          Marker marker = board.hasWinner();
+          if (marker == Marker.EMPTY) {
+            continue;
+          } else {
+            System.out.println("The winner is: " + opponent.getMarker());
+            if (opponent instanceof HumanPlayer) {
+              System.out.println("Please, enter your name:");
+              winnerName = scanner.nextLine();
+            }
+            noMoreMoves = true;
+            break;
+          }
+        } else {
+          noMoreMoves = true;
+          break;
+        }
+      }
     }
-    if (order.equals(Order.PLAYER_TWO_FIRST)) {
-      while (!orderSecondPlayer()) ;
-    }
-    writeGameToDb();
+
+    System.out.println();
     showGame();
+    writeGameToDb();
     showHallOfFame();
     return true;
   }
@@ -44,146 +66,30 @@ public class TicTacToeGame implements Game {
     return PRICE;
   }
 
-  private void playerOneMove() {
-    io.write("Your next move is: ");
-    while (true) {
-      final int position = io.readNextInt();
-      if (!isValidPosition(position)) {
-        continue;
-      } else {
-        final int row = position / board.getGrid().length;
-        final int col = position % board.getGrid().length;
-        board.getGrid()[row][col] = marker;
-        board.getCells()[position] = marker;
-        break;
-      }
-    }
-  }
-
-  private void playerTwoMove() {
-    if (opponent.move(board, otherMarker(marker))) {
-      resultHelper("Draw !!!", Result.DRAW);
-    }
-  }
-
-  private boolean orderFirstPlayer() {
-    showGame();
-    if (isDraw()) {
-      return true;
-    }
-    playerOneMove();
-    if (hasWinner(marker)) {
-      return true;
-    }
-    showGame();
-    playerTwoMove();
-    if (hasWinner(otherMarker(marker))) {
-      return true;
-    }
-    return false;
-  }
-
-  private boolean orderSecondPlayer() {
-    playerTwoMove();
-    showGame();
-    if (hasWinner(otherMarker(marker))) {
-      return true;
-    }
-    if (isDraw()) {
-      return true;
-    }
-    playerOneMove();
-    showGame();
-    if (hasWinner(marker)) {
-      return true;
-    }
-    return false;
-  }
-
   private void writeGameToDb() {
     final Queries query = new Queries();
-    if (getResult().equals(Result.PLAYER_WIN)) {
-      io.write("Please, enter your name:");
-      io.read();
-      final String name = io.read();
-      final int id = query.getId(name);
-      if (id != 0) {
-        query.addWinGameKnownPlayer(id);
-      } else if (name.length() != 0) {
-        query.addWinGameUnknownPlayer(name);
-      }
-    } else {
+    if (winnerName == null) {
       query.addLoseGame();
+      return;
     }
+    final int id = query.getId(winnerName);
+    if (id != 0) {
+      query.addWinGameKnownPlayer(id);
+    } else if (winnerName.length() != 0) {
+      query.addWinGameUnknownPlayer(winnerName);
+    }
+  }
+
+  private void showGame() {
+    board.showBoard();
   }
 
   private void showHallOfFame() {
     final Queries query = new Queries();
     final ArrayList<String> result = query.topThree();
-    io.write("\nHall of Fame:");
+    System.out.println("\nHall of Fame:");
     for (String string : result) {
-      io.write(string);
+      System.out.println(string);
     }
-  }
-
-  private void resultHelper(final String string, final Result result) {
-    getIo().write(string);
-    setResult(result);
-  }
-
-  private boolean hasWinner(final Marker marker) {
-    if (board.hasWinner(marker)) {
-      if (marker == this.marker) {
-        resultHelper("Player win !!!", Result.PLAYER_WIN);
-      } else {
-        resultHelper("Computer win !!!", Result.COMPUTER_WIN);
-      }
-      return true;
-    }
-    return false;
-  }
-
-  private boolean isDraw() {
-    if (board.getCells().length < 1) {
-      resultHelper("Draw !!!", Result.DRAW);
-      return true;
-    }
-    return false;
-  }
-
-  private boolean isValidPosition(final int position) {
-    if (position < 0 || position > board.getCells().length - 1) {
-      io.write("Choose a number between 0 and " + (board.getCells().length - 1));
-      return false;
-    }
-    if (board.isFree(position) == false) {
-      getIo().write("Position already in use!");
-      return false;
-    }
-    return true;
-  }
-
-  private void showGame() {
-    board.showBoard(io);
-  }
-
-  private Marker otherMarker(final Marker marker) {
-    if (marker.equals(Marker.X)) {
-      return Marker.O;
-    } else {
-      return Marker.X;
-    }
-  }
-
-  public Result getResult() {
-    return result;
-  }
-
-  private void setResult(final Result result) {
-    this.result = result;
-  }
-
-  public InputOutput getIo() {
-    return io;
   }
 }
