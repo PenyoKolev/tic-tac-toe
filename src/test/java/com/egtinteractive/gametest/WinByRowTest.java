@@ -6,24 +6,21 @@ import org.testng.annotations.Test;
 import com.egtinteractive.machine.ArcadeMachine;
 import com.egtinteractive.provider.Provider;
 
-public class GameTest {
+public class WinByRowTest {
 
-  @DataProvider(name = "playGameHP")
+  @DataProvider(name = "playGameHPWinByRow")
   public Object[][] machine() {
-    return Provider.playGameHP();
+    return Provider.playGameHPWinByRow();
   }
   
 
-  @Test(dataProvider = "playGameHP")
-  public void playGameWhenFinishShouldChangeStateToSELECT_GAME(ArcadeMachine machine) {
-    // Arrange
-    
-    
+  @Test(dataProvider = "playGameHPWinByRow")
+  public void playGameWinByRow(ArcadeMachine machine) {
     // Act
-  
-
+    machine.playGame();
+    
     // Assert
-
+    assertEquals(machine.getStateName(), "SELECT_GAME");
     
   }
 }

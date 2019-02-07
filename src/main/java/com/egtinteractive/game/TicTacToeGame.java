@@ -2,7 +2,6 @@ package com.egtinteractive.game;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 import com.egtinteractive.db.Queries;
 import com.egtinteractive.io.IO;
 import com.egtinteractive.board.Board;
@@ -12,13 +11,11 @@ import com.egtinteractive.player.Opponent;
 
 public class TicTacToeGame implements Game {
 
-  private Scanner scanner = new Scanner(System.in);
   private static final int PRICE = 10;
   private final Board board;
   private final List<Opponent> opponents;
   private String winnerName;
   private IO io;
-  
 
   public TicTacToeGame(Board board, List<Opponent> opponents) {
     this.board = board;
@@ -47,7 +44,7 @@ public class TicTacToeGame implements Game {
             io.write("The winner is: " + opponent.getMarker());
             if (opponent instanceof HumanPlayer) {
               io.write("Please, enter your name:");
-              winnerName = scanner.nextLine();
+              winnerName = io.read();
             }
             noMoreMoves = true;
             break;
@@ -58,8 +55,7 @@ public class TicTacToeGame implements Game {
         }
       }
     }
-
-    System.out.println();
+    io.write("");
     showGame();
     writeGameToDb();
     showHallOfFame();

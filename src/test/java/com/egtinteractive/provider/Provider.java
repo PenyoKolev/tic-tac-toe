@@ -12,7 +12,23 @@ public class Provider {
     return new Object[][] {{Generator.playGameAI()}};
   }
   
-  public static Object[][] playGameHP() {
-    return new Object[][] {{Generator.playGameHP()}};
+  public static Object[][] playGameHPWinByRow() {
+    return new Object[][] {{Generator.playGameHPWinByRow()}};
+  }
+  
+  public static Object[][] playGameHPWinByCol() {
+    return new Object[][] {{Generator.playGameHPWinByCol()}};
+  }
+  
+  public static Object[][] playGameHPWinByDiagonal() {
+    return new Object[][] {{Generator.playGameHPWinByDiagonal()}};
+  }
+  
+  public static Object[][] playGameHPInvalidMove() {
+    return new Object[][] {{Generator.playGameHPInvalidMove()}};
+  }
+  
+  public static Object[][] playGameHPNoMoreMoves() {
+    return new Object[][] {{Generator.playGameHPNoMoreMoves()}};
   }
 }
