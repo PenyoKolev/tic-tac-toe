@@ -1,6 +1,7 @@
 package com.egtinteractive.board;
 
 import java.util.Arrays;
+import com.egtinteractive.io.IO;
 
 public class TicTacToeBoard implements Board {
   private final int size;
@@ -26,7 +27,6 @@ public class TicTacToeBoard implements Board {
     final int col = index % grid.length;
     grid[row][col] = marker;
     System.out.println();
-    showBoard();
   }
 
   @Override
@@ -35,7 +35,7 @@ public class TicTacToeBoard implements Board {
   }
 
   @Override
-  public void showBoard() {
+  public void showBoard(IO io) {
     for (int i = 0; i < size; i++) {
       final StringBuilder sb = new StringBuilder();
       sb.append(" ");
@@ -44,12 +44,13 @@ public class TicTacToeBoard implements Board {
       }
       sb.append(grid[i][size - 1]);
 
-      System.out.println(sb.toString());
+      io.write(sb.toString());
       if (i < size - 1) {
+        StringBuilder sbLine = new StringBuilder();
         for (int j = 0; j < size; j++) {
-          System.out.print("----");
+          sbLine.append("----");
         }
-        System.out.println("");
+        io.write(sbLine.toString());
       }
     }
   }

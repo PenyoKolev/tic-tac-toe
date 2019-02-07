@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import com.egtinteractive.db.Queries;
+import com.egtinteractive.io.IO;
 import com.egtinteractive.board.Board;
 import com.egtinteractive.board.Marker;
 import com.egtinteractive.player.HumanPlayer;
@@ -16,6 +17,8 @@ public class TicTacToeGame implements Game {
   private final Board board;
   private final List<Opponent> opponents;
   private String winnerName;
+  private IO io;
+  
 
   public TicTacToeGame(Board board, List<Opponent> opponents) {
     this.board = board;
@@ -23,7 +26,8 @@ public class TicTacToeGame implements Game {
   }
 
   @Override
-  public boolean startGame() {
+  public boolean startGame(IO io) {
+    this.io = io;
     int maxMoves = board.getCells().length;
     boolean noMoreMoves = false;
     for (int i = 0; i < maxMoves; ) {
@@ -33,15 +37,16 @@ public class TicTacToeGame implements Game {
       for (Opponent opponent : opponents) {
         i++;
         if (i != maxMoves + 1) {
-          final int index = opponent.getNextMove(board);
+          final int index = opponent.getNextMove(board, io);
           board.makeMove(index, opponent.getMarker());
+          board.showBoard(io);
           Marker marker = board.hasWinner();
           if (marker == Marker.EMPTY) {
             continue;
           } else {
-            System.out.println("The winner is: " + opponent.getMarker());
+            io.write("The winner is: " + opponent.getMarker());
             if (opponent instanceof HumanPlayer) {
-              System.out.println("Please, enter your name:");
+              io.write("Please, enter your name:");
               winnerName = scanner.nextLine();
             }
             noMoreMoves = true;
@@ -81,15 +86,15 @@ public class TicTacToeGame implements Game {
   }
 
   private void showGame() {
-    board.showBoard();
+    board.showBoard(io);
   }
 
   private void showHallOfFame() {
     final Queries query = new Queries();
     final ArrayList<String> result = query.topThree();
-    System.out.println("\nHall of Fame:");
+    io.write("\nHall of Fame:");
     for (String string : result) {
-      System.out.println(string);
+      io.write(string);
     }
   }
 }

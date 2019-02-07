@@ -1,4 +1,4 @@
-package com.egtinteractive.test;
+package com.egtinteractive.machinetest;
 
 import static org.testng.Assert.assertEquals;
 import java.util.ArrayList;
@@ -15,6 +15,7 @@ import com.egtinteractive.player.Opponent;
 import com.egtinteractive.provider.Provider;
 
 public class PlayGameTest {
+  
   @DataProvider(name = "playGameAI")
   public Object[][] machine() {
     return Provider.playGameAI();

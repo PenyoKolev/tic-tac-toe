@@ -1,11 +1,10 @@
 package com.egtinteractive.player;
 
-import java.util.Scanner;
 import com.egtinteractive.board.Board;
 import com.egtinteractive.board.Marker;
+import com.egtinteractive.io.IO;
 
 public class HumanPlayer implements Opponent {
-  Scanner scanner = new Scanner(System.in);
   private final Marker marker;
 
   public HumanPlayer(Marker marker) {
@@ -13,15 +12,15 @@ public class HumanPlayer implements Opponent {
   }
 
   @Override
-  public int getNextMove(final Board board) {
-    System.out.println("Your next move: ");
+  public int getNextMove(final Board board, IO io) {
+    io.write("Your next move: ");
     while (true) {
-      final int position = scanner.nextInt();
+      final int position = Integer.parseInt(io.read());
       if (position < 0 || position > board.getCells().length - 1) {
-        System.out.println("Choose a number between 0 and " + (board.getCells().length - 1));
+        io.write("Choose a number between 0 and " + (board.getCells().length - 1));
         continue;
       } else if (board.isFree(position) == false) {
-        System.out.println("Position already in use!");
+        io.write("Position already in use!");
         continue;
       } else {
         return position;

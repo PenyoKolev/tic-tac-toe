@@ -1,4 +1,4 @@
-package com.egtinteractive.test;
+package com.egtinteractive.machinetest;
 
 import static org.testng.Assert.assertEquals;
 import java.util.ArrayList;

@@ -1,13 +1,16 @@
 package com.egtinteractive.machine;
 
 import com.egtinteractive.game.Game;
+import com.egtinteractive.io.IO;
 
 public class ArcadeMachine implements Machine {
+  private final IO io;
   private StateMachine state;
   private int balance;
   private Game game;
 
-  public ArcadeMachine() {
+  public ArcadeMachine(IO io) {
+    this.io = io;
     this.setState(StateMachine.SELECT_GAME);
     this.setBalance(0);
   }
@@ -25,6 +28,11 @@ public class ArcadeMachine implements Machine {
   @Override
   public void playGame() {
     this.state.playGame(this);
+  }
+  
+  @Override
+  public IO getIO() {
+    return io;
   }
 
   public String getStateName() {

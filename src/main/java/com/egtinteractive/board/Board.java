@@ -1,5 +1,7 @@
 package com.egtinteractive.board;
 
+import com.egtinteractive.io.IO;
+
 public interface Board {
 
   public boolean isFree(final int position);
@@ -8,7 +10,7 @@ public interface Board {
 
   public Marker[] getCells();
 
-  public void showBoard();
+  public void showBoard(IO io);
 
   public Marker hasWinner();
 }

@@ -7,6 +7,7 @@ import com.egtinteractive.board.Board;
 import com.egtinteractive.board.Marker;
 import com.egtinteractive.board.TicTacToeBoard;
 import com.egtinteractive.game.TicTacToeGame;
+import com.egtinteractive.io.ConsoleIO;
 import com.egtinteractive.machine.ArcadeMachine;
 import com.egtinteractive.player.AIPlayer;
 import com.egtinteractive.player.HumanPlayer;
@@ -17,7 +18,7 @@ public class Generator {
   private static ArcadeMachine machine;
 
   public static ArcadeMachine selectGame() {
-    machine = new ArcadeMachine();
+    machine = new ArcadeMachine(new ConsoleIO());
     return machine;
   }
 
@@ -27,7 +28,7 @@ public class Generator {
     List<Opponent> opponents = new ArrayList<>();
     opponents.add(new AIPlayer(new AITicTacToe(), Marker.X));
     opponents.add(new AIPlayer(new AITicTacToe(), Marker.O));
-    machine = new ArcadeMachine();
+    machine = new ArcadeMachine(new ConsoleIO());
     machine.putCoins(40);
     machine.selectGame(new TicTacToeGame(board, opponents));
     return machine;
@@ -39,7 +40,7 @@ public class Generator {
     List<Opponent> opponents = new ArrayList<>();
     opponents.add(new HumanPlayer(Marker.X));
     opponents.add(new HumanPlayer(Marker.O));
-    machine = new ArcadeMachine();
+    machine = new ArcadeMachine(new ConsoleIO());
     machine.putCoins(40);
     machine.selectGame(new TicTacToeGame(board, opponents));
     return machine;

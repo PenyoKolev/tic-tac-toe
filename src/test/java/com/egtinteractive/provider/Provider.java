@@ -15,5 +15,4 @@ public class Provider {
   public static Object[][] playGameHP() {
     return new Object[][] {{Generator.playGameHP()}};
   }
-
 }

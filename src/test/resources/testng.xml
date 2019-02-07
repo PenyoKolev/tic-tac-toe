@@ -5,7 +5,8 @@
 <suite name="Suite">
 	<test name="Tic Tac Toe Test">
 		<packages>
-			<package name="com.egtinteractive.test" />
+			<package name="com.egtinteractive.machinetest" />
+			<package name="com.egtinteractive.gametest" />
 		</packages>
 	</test>
 </suite>
